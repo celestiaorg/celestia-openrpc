@@ -5,7 +5,7 @@ on:
   workflow_call:
     inputs:
       GO_VERSION:
-        description: 'Go version to use'
+        description: "Go version to use"
         type: string
         required: true
 
@@ -46,11 +46,3 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: celestiaorg/.github/.github/actions/markdown-lint@v0.1.1
-
-  protobuf-lint:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v3
-      - run: make proto-gen
-      - run: make proto-lint

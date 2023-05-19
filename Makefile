@@ -1,5 +1,4 @@
 DOCKER := $(shell which docker)
-DOCKER_BUF := $(DOCKER) run --rm -v $(CURDIR):/workspace --workdir /workspace bufbuild/buf
 
 ## help: Show this help message
 help: Makefile
@@ -48,16 +47,3 @@ test-all:
 	@$(MAKE) test-unit
 	@$(MAKE) test-unit-race
 .PHONY: test-all
-
-## proto-gen: Generate protobuf files. Requires docker.
-proto-gen:
-	@echo "--> Generating Protobuf files"
-	./proto/get_deps.sh
-	./proto/gen.sh
-.PHONY: proto-gen
-
-## proto-lint: Lint protobuf files. Requires docker.
-proto-lint:
-	@echo "--> Linting Protobuf files"
-	@$(DOCKER_BUF) lint --error-format=json
-.PHONY: proto-lint
