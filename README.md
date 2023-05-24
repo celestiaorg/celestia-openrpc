@@ -1,4 +1,4 @@
-# celestia-operpc
+# celestia-openrpc
 
 OpenRPC client of [celestia-node RPC](https://docs.celestia.org/category/rpc-api/), without depenencies on celestia-node/celestia-app/cosmos-sdk.
 
