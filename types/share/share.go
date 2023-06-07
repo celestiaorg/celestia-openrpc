@@ -1,9 +1,14 @@
 package share
 
 import (
+	"errors"
+
 	"github.com/celestiaorg/nmt"
 	"github.com/rollkit/celestia-openrpc/types/core"
 )
+
+// ErrNotAvailable is returned whenever DA sampling fails.
+var ErrNotAvailable = errors.New("share: data not available")
 
 // Root represents root commitment to multiple Shares.
 // In practice, it is a commitment to all the Data in a square.
