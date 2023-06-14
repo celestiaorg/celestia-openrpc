@@ -13,6 +13,7 @@ import (
 	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/libp2p/go-libp2p/core/protocol"
 	rcmgr "github.com/libp2p/go-libp2p/p2p/host/resource-manager"
+	"github.com/rollkit/celestia-openrpc/types/blob"
 
 	"github.com/rollkit/celestia-openrpc/types/das"
 	"github.com/rollkit/celestia-openrpc/types/header"
@@ -68,10 +69,9 @@ type StateAPI struct {
 	SubmitTx         func(ctx context.Context, tx state.Tx) (*state.TxResponse, error) `perm:"write"`
 	SubmitPayForBlob func(
 		ctx context.Context,
-		nID namespace.ID,
-		data []byte,
 		fee state.Int,
 		gasLim uint64,
+		blobs []*blob.Blob,
 	) (*state.TxResponse, error) `perm:"write"`
 	CancelUnbondingDelegation func(
 		ctx context.Context,
