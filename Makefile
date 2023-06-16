@@ -47,3 +47,20 @@ test-all:
 	@$(MAKE) test-unit
 	@$(MAKE) test-unit-race
 .PHONY: test-all
+
+proto-gen:
+	@echo "Generating Protobuf files"
+	@go run github.com/bufbuild/buf/cmd/buf generate
+.PHONY: proto-gen
+
+# These targets are provided for convenience and are intended for local
+# execution only.
+proto-lint:
+	@echo "Linting Protobuf files"
+	@go run github.com/bufbuild/buf/cmd/buf lint
+.PHONY: proto-lint
+
+proto-format:
+	@echo "Formatting Protobuf files"
+	@find . -name '*.proto' -path "./proto/*" -exec clang-format -i {} \;
+.PHONY: proto-format

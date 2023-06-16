@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 
+	rpcproto "github.com/rollkit/celestia-openrpc/proto/blob/rollkit"
 	"github.com/rollkit/celestia-openrpc/types/namespace"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 )
 
 // Commitment is a Merkle Root of the subtree built from shares of the Blob.
@@ -24,7 +24,7 @@ func (com Commitment) Equal(c Commitment) bool {
 
 // Blob represents any application-specific binary data that anyone can submit to Celestia.
 type Blob struct {
-	tmproto.Blob `json:"blob"`
+	rpcproto.Blob `json:"blob"`
 
 	Commitment Commitment `json:"commitment"`
 }
