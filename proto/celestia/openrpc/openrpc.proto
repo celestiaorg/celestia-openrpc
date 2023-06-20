@@ -8,8 +8,9 @@ option go_package = "github.com/rollkit/celestia-openrpc/proto/celestia/openrpc"
 // to a namespace and is encoded into shares based on the format specified by
 // share_version.
 message Blob {
-  bytes  namespace_id  = 1;
+  bytes  namespace  = 1;
   bytes  data          = 2;
   uint32 share_version = 3;
   uint32 namespace_version = 4;
+  bytes commitment = 5;
 }

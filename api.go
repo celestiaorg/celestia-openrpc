@@ -40,10 +40,7 @@ type DASAPI struct {
 
 type BlobAPI struct {
 	Submit   func(context.Context, []*blob.Blob) (uint64, error)                                     `perm:"write"`
-	Get      func(context.Context, uint64, namespace.ID, blob.Commitment) (*blob.Blob, error)        `perm:"read"`
 	GetAll   func(context.Context, uint64, []namespace.ID) ([]*blob.Blob, error)                     `perm:"read"`
-	GetProof func(context.Context, uint64, namespace.ID, blob.Commitment) (*blob.Proof, error)       `perm:"read"`
-	Included func(context.Context, uint64, namespace.ID, *blob.Proof, blob.Commitment) (bool, error) `perm:"read"`
 }
 
 type HeaderAPI struct {
