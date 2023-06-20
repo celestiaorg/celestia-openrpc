@@ -12,6 +12,7 @@ const AuthKey = "Authorization"
 
 type Client struct {
 	Fraud  FraudAPI
+	Blob   BlobAPI
 	Header HeaderAPI
 	State  StateAPI
 	Share  ShareAPI
@@ -51,6 +52,7 @@ func NewClient(ctx context.Context, addr string, token string) (*Client, error) 
 
 	modules := map[string]interface{}{
 		"fraud":  &client.Fraud,
+		"blob":   &client.Blob,
 		"header": &client.Header,
 		"state":  &client.State,
 		"share":  &client.Share,

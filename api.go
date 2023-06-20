@@ -17,7 +17,8 @@ import (
 
 	"github.com/rollkit/celestia-openrpc/types/das"
 	"github.com/rollkit/celestia-openrpc/types/header"
-	"github.com/rollkit/celestia-openrpc/types/namespace"
+
+	"github.com/celestiaorg/nmt/namespace"
 	"github.com/rollkit/celestia-openrpc/types/node"
 	"github.com/rollkit/celestia-openrpc/types/share"
 	"github.com/rollkit/celestia-openrpc/types/state"
@@ -35,6 +36,14 @@ type Proof struct {
 type DASAPI struct {
 	SamplingStats func(ctx context.Context) (das.SamplingStats, error) `perm:"read"`
 	WaitCatchUp   func(ctx context.Context) error                      `perm:"read"`
+}
+
+type BlobAPI struct {
+	Submit   func(context.Context, []*blob.Blob) (uint64, error)                                     `perm:"write"`
+	Get      func(context.Context, uint64, namespace.ID, blob.Commitment) (*blob.Blob, error)        `perm:"read"`
+	GetAll   func(context.Context, uint64, []namespace.ID) ([]*blob.Blob, error)                     `perm:"read"`
+	GetProof func(context.Context, uint64, namespace.ID, blob.Commitment) (*blob.Proof, error)       `perm:"read"`
+	Included func(context.Context, uint64, namespace.ID, *blob.Proof, blob.Commitment) (bool, error) `perm:"read"`
 }
 
 type HeaderAPI struct {
