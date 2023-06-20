@@ -7,7 +7,7 @@ import (
 
 	"github.com/celestiaorg/nmt"
 	"github.com/celestiaorg/nmt/namespace"
-	rpcproto "github.com/rollkit/celestia-openrpc/proto/blob/rollkit"
+	rpcproto "github.com/rollkit/celestia-openrpc/proto/celestia/openrpc"
 )
 
 const (
