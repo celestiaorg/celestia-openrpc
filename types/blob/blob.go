@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/celestiaorg/nmt/namespace"
-	rpcproto "github.com/rollkit/celestia-openrpc/proto/celestia/openrpc"
+	rpcproto "github.com/rollkit/celestia-openrpc/proto/blob"
 )
 
 type Blob rpcproto.Blob
