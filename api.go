@@ -18,7 +18,6 @@ import (
 	"github.com/rollkit/celestia-openrpc/types/das"
 	"github.com/rollkit/celestia-openrpc/types/header"
 
-	"github.com/celestiaorg/nmt/namespace"
 	"github.com/rollkit/celestia-openrpc/types/node"
 	"github.com/rollkit/celestia-openrpc/types/share"
 	"github.com/rollkit/celestia-openrpc/types/state"
@@ -39,11 +38,11 @@ type DASAPI struct {
 }
 
 type BlobAPI struct {
-	Submit   func(context.Context, []*blob.Blob) (uint64, error)                                     `perm:"write"`
-	Get      func(context.Context, uint64, namespace.ID, blob.Commitment) (*blob.Blob, error)        `perm:"read"`
-	GetAll   func(context.Context, uint64, []namespace.ID) ([]*blob.Blob, error)                     `perm:"read"`
-	GetProof func(context.Context, uint64, namespace.ID, blob.Commitment) (*blob.Proof, error)       `perm:"read"`
-	Included func(context.Context, uint64, namespace.ID, *blob.Proof, blob.Commitment) (bool, error) `perm:"read"`
+	Submit   func(context.Context, []*blob.Blob) (uint64, error)                                        `perm:"write"`
+	Get      func(context.Context, uint64, share.Namespace, blob.Commitment) (*blob.Blob, error)        `perm:"read"`
+	GetAll   func(context.Context, uint64, []share.Namespace) ([]*blob.Blob, error)                     `perm:"read"`
+	GetProof func(context.Context, uint64, share.Namespace, blob.Commitment) (*blob.Proof, error)       `perm:"read"`
+	Included func(context.Context, uint64, share.Namespace, *blob.Proof, blob.Commitment) (bool, error) `perm:"read"`
 }
 
 type HeaderAPI struct {
@@ -141,7 +140,7 @@ type ShareAPI struct {
 	GetSharesByNamespace func(
 		ctx context.Context,
 		root *share.Root,
-		namespace namespace.ID,
+		namespace share.Namespace,
 	) (share.NamespacedShares, error) `perm:"public"`
 }
 type P2PAPI struct {

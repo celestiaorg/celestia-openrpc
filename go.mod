@@ -3,6 +3,7 @@ module github.com/rollkit/celestia-openrpc
 go 1.20
 
 require (
+	cosmossdk.io/errors v1.0.0-beta.7
 	cosmossdk.io/math v1.0.1
 	github.com/celestiaorg/go-fraud v0.1.1
 	github.com/celestiaorg/go-header v0.2.9
