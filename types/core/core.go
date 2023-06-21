@@ -17,7 +17,7 @@ type Header struct {
 	// basic block info
 	Version tmversion.Consensus `json:"version"`
 	ChainID string              `json:"chain_id"`
-	Height  int64               `json:"height"`
+	Height  int64               `json:"height,string"`
 	Time    time.Time           `json:"time"`
 
 	// prev block info
