@@ -3,6 +3,13 @@ package blob;
 
 option go_package = "github.com/rollkit/celestia-openrpc/proto/blob";
 
+// Proof is a collection of nmt.Proofs that verifies the inclusion of the data.
+message Proof {
+  uint32 start = 1;
+  uint32 end = 2;
+  repeated bytes nodes = 3;
+}
+
 // Blob (named after binary large object) is a chunk of data submitted by a user
 // to be published to the Celestia blockchain. The data of a Blob is published
 // to a namespace and is encoded into shares based on the format specified by

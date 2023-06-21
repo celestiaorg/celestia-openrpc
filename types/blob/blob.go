@@ -7,6 +7,10 @@ import (
 	rpcproto "github.com/rollkit/celestia-openrpc/proto/blob"
 )
 
+type Commitment []byte
+
+type Proof rpcproto.Proof
+
 type Blob rpcproto.Blob
 
 func (b *Blob) GetNamespace() namespace.ID {
