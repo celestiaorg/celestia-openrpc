@@ -23,6 +23,21 @@ var (
 // Consists of version byte and namespace ID.
 type Namespace []byte
 
+// NewNamespaceV0 takes a variable size byte slice and creates a version 0 Namespace.
+// The byte slice must be <= 10 bytes.
+// If it is less than 10 bytes, it will be left padded to size 10 with 0s.
+func NewNamespaceV0(id []byte) (Namespace, error) {
+	if len(id) > appns.NamespaceVersionZeroIDSize {
+		return nil, fmt.Errorf("namespace id must be <= %v, but it was %v bytes", appns.NamespaceVersionZeroIDSize, len(id))
+	}
+
+	n := make(Namespace, NamespaceSize)
+	// version and zero padding are already set as zero,
+	// so simply copying subNID to the end is enough
+	copy(n[len(n)-len(id):], id)
+	return n, nil
+}
+
 // NamespaceFromBytes converts bytes into Namespace and validates it.
 func NamespaceFromBytes(b []byte) (Namespace, error) {
 	n := Namespace(b)
