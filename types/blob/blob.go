@@ -5,6 +5,7 @@ import (
 
 	"cosmossdk.io/errors"
 	"github.com/celestiaorg/nmt/namespace"
+
 	rpcproto "github.com/rollkit/celestia-openrpc/proto/blob"
 	appns "github.com/rollkit/celestia-openrpc/types/namespace"
 )

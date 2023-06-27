@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/celestiaorg/rsmt2d"
+
 	"github.com/rollkit/celestia-openrpc/types/namespace"
 	"github.com/rollkit/celestia-openrpc/types/share"
 )

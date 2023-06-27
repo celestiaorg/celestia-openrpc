@@ -5,6 +5,7 @@ import (
 
 	"github.com/celestiaorg/nmt"
 	"github.com/celestiaorg/rsmt2d"
+
 	appns "github.com/rollkit/celestia-openrpc/types/namespace"
 )
 

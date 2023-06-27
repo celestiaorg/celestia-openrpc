@@ -10,7 +10,6 @@ type Namespace struct {
 	ID      []byte
 }
 
-
 // New returns a new namespace with the provided version and id.
 func New(version uint8, id []byte) (Namespace, error) {
 	err := validateVersion(version)

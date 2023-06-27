@@ -3,8 +3,9 @@ package header
 import (
 	"encoding/json"
 
-	"github.com/rollkit/celestia-openrpc/types/core"
 	tmjson "github.com/tendermint/tendermint/libs/json"
+
+	"github.com/rollkit/celestia-openrpc/types/core"
 )
 
 // RawHeader is an alias to core.Header. It is

@@ -3,6 +3,7 @@ package share
 import (
 	"github.com/celestiaorg/nmt"
 	"github.com/celestiaorg/rsmt2d"
+
 	"github.com/rollkit/celestia-openrpc/types/core"
 )
 
