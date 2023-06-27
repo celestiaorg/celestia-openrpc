@@ -49,10 +49,6 @@ services:
 
 volumes:
   keyring-volume:
-    driver_opts:
-      type: none
-      device: ${PWD}/../keyring-test
-      o: bind
 
 networks:
   localnet:
