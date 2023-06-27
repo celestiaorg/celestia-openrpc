@@ -25,10 +25,10 @@ func (i *IntegrationTestSuite) SetupSuite() {
 	identifier := strings.ToLower(uuid.New().String())
 
 	i.dockerCompose = testcontainers.NewLocalDockerCompose(composeFilePaths, identifier)
-	 i.dockerCompose.WaitForService("bridge0",
-	 wait.ForHTTP("/header/1").WithPort("26659").
-	 	WithStartupTimeout(60*time.Second).
-	 	WithPollInterval(3*time.Second))
+	i.dockerCompose.WaitForService("bridge0",
+		wait.ForHTTP("/header/1").WithPort("26659").
+			WithStartupTimeout(60*time.Second).
+			WithPollInterval(3*time.Second))
 	execError := i.dockerCompose.WithCommand([]string{"up", "-d"}).Invoke()
 	err := execError.Error
 	if err != nil {
@@ -53,9 +53,8 @@ func (i *IntegrationTestSuite) TestNewClient() {
 	i.NotNil(client)
 }
 
-func (i *IntegrationTestSuite) TestDataRoundTrip() {
-	time.Sleep(30 * time.Second)
-	client, err := openrpc.NewClient(context.Background(), "http://localhost:26659", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJwdWJsaWMiLCJyZWFkIiwid3JpdGUiLCJhZG1pbiJdfQ.z1FNFoxCRayehAnJHlQsU9kBuCIEmwfESW_1drgJTdk")
+func (i *IntegrationTestSuite) TestGetHeaderByHeight() {
+	client, err := openrpc.NewClient(context.Background(), "http://localhost:26658", "")
 
 	i.Require().NoError(err)
 	defer client.Close()

@@ -46,7 +46,10 @@ func (c *Client) Close() {
 }
 
 func NewClient(ctx context.Context, addr string, token string) (*Client, error) {
-	authHeader := http.Header{AuthKey: []string{fmt.Sprintf("Bearer %s", token)}}
+	var authHeader http.Header
+	if token != "" {
+		authHeader = http.Header{AuthKey: []string{fmt.Sprintf("Bearer %s", token)}}
+	}
 
 	var client Client
 
