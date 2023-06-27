@@ -51,7 +51,7 @@ func RandShares(total int) ([]share.Share, error) {
 func RandNamespace() share.Namespace {
 	var r = rand.New(rand.NewSource(time.Now().Unix())) //nolint:gosec
 	rb := make([]byte, namespace.NamespaceVersionZeroIDSize)
-	r.Read(rb)
+	r.Read(rb) // nolint:gosec
 	for {
 		namespace, _ := share.NewNamespaceV0(rb)
 		if err := namespace.ValidateDataNamespace(); err != nil {
