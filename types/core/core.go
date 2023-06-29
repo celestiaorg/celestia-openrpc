@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/tendermint/tendermint/crypto"
-	"github.com/tendermint/tendermint/libs/bits"
 	tmbytes "github.com/tendermint/tendermint/libs/bytes"
 	tmversion "github.com/tendermint/tendermint/proto/tendermint/version"
 )
@@ -67,12 +66,6 @@ type Commit struct {
 	Round      int32       `json:"round"`
 	BlockID    BlockID     `json:"block_id"`
 	Signatures []CommitSig `json:"signatures"`
-
-	// Memoized in first call to corresponding method.
-	// NOTE: can't memoize in constructor because constructor isn't used for
-	// unmarshaling.
-	hash     tmbytes.HexBytes
-	bitArray *bits.BitArray
 }
 
 // CommitSig is a part of the Vote included in a Commit.
@@ -103,9 +96,6 @@ type ValidatorSet struct {
 	// NOTE: persisted via reflect, must be exported.
 	Validators []*Validator `json:"validators"`
 	Proposer   *Validator   `json:"proposer"`
-
-	// cached (unexported)
-	totalVotingPower int64
 }
 
 // Volatile state for each Validator
@@ -133,5 +123,4 @@ type DataAvailabilityHeader struct {
 	ColumnRoots [][]byte `json:"column_roots"`
 	// hash is the Merkle root of the row and column roots. This field is the
 	// memoized result from `Hash()`.
-	hash []byte
 }

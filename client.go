@@ -3,8 +3,9 @@ package client
 import (
 	"context"
 	"fmt"
-	"github.com/filecoin-project/go-jsonrpc"
 	"net/http"
+
+	"github.com/filecoin-project/go-jsonrpc"
 )
 
 const AuthKey = "Authorization"

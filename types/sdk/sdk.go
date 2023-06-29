@@ -2,9 +2,9 @@ package sdk
 
 import (
 	"fmt"
-	"github.com/gogo/protobuf/types"
 
 	"cosmossdk.io/math"
+	"github.com/gogo/protobuf/types"
 )
 
 // Address is a common interface for different types of addresses used by the SDK
