@@ -6,7 +6,6 @@ import (
 	"cosmossdk.io/errors"
 	"github.com/celestiaorg/nmt/namespace"
 
-	pb "github.com/rollkit/celestia-openrpc/proto/blob"
 	appns "github.com/rollkit/celestia-openrpc/types/namespace"
 )
 
@@ -16,9 +15,19 @@ var (
 
 type Commitment []byte
 
-type Proof pb.Proof
+type Proof struct {
+	Start uint32   `protobuf:"varint,1,opt,name=start,proto3" json:"start,omitempty"`
+	End   uint32   `protobuf:"varint,2,opt,name=end,proto3" json:"end,omitempty"`
+	Nodes [][]byte `protobuf:"bytes,3,rep,name=nodes,proto3" json:"nodes,omitempty"`
+}
 
-type Blob pb.Blob
+type Blob struct {
+	Namespace        []byte `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	Data             []byte `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+	ShareVersion     uint32 `protobuf:"varint,3,opt,name=share_version,json=shareVersion,proto3" json:"share_version,omitempty"`
+	NamespaceVersion uint32 `protobuf:"varint,4,opt,name=namespace_version,json=namespaceVersion,proto3" json:"namespace_version,omitempty"`
+	Commitment       []byte `protobuf:"bytes,5,opt,name=commitment,proto3" json:"commitment,omitempty"`
+}
 
 // NewBlob creates a new coretypes.Blob from the provided data after performing
 // basic stateless checks over it.
@@ -46,7 +55,7 @@ func (b *Blob) GetNamespace() namespace.ID {
 }
 
 func (b *Blob) MarshalJSON() ([]byte, error) {
-	blob := &pb.Blob{
+	blob := &Blob{
 		Namespace:        b.GetNamespace(),
 		Data:             b.Data,
 		ShareVersion:     b.ShareVersion,
@@ -57,7 +66,7 @@ func (b *Blob) MarshalJSON() ([]byte, error) {
 }
 
 func (b *Blob) UnmarshalJSON(data []byte) error {
-	var blob pb.Blob
+	var blob Blob
 	err := json.Unmarshal(data, &blob)
 	if err != nil {
 		return err
