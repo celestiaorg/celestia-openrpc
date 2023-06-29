@@ -6,7 +6,7 @@ import (
 	"cosmossdk.io/errors"
 	"github.com/celestiaorg/nmt/namespace"
 
-	rpcproto "github.com/rollkit/celestia-openrpc/proto/blob"
+	pb "github.com/rollkit/celestia-openrpc/proto/blob"
 	appns "github.com/rollkit/celestia-openrpc/types/namespace"
 )
 
@@ -16,9 +16,9 @@ var (
 
 type Commitment []byte
 
-type Proof rpcproto.Proof
+type Proof pb.Proof
 
-type Blob rpcproto.Blob
+type Blob pb.Blob
 
 // NewBlob creates a new coretypes.Blob from the provided data after performing
 // basic stateless checks over it.
@@ -46,7 +46,7 @@ func (b *Blob) GetNamespace() namespace.ID {
 }
 
 func (b *Blob) MarshalJSON() ([]byte, error) {
-	blob := &rpcproto.Blob{
+	blob := &pb.Blob{
 		Namespace:        b.GetNamespace(),
 		Data:             b.Data,
 		ShareVersion:     b.ShareVersion,
@@ -57,7 +57,7 @@ func (b *Blob) MarshalJSON() ([]byte, error) {
 }
 
 func (b *Blob) UnmarshalJSON(data []byte) error {
-	var blob rpcproto.Blob
+	var blob pb.Blob
 	err := json.Unmarshal(data, &blob)
 	if err != nil {
 		return err
