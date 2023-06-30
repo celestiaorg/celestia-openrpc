@@ -49,13 +49,13 @@ func NewBlob(ns appns.Namespace, blob []byte, shareVersion uint8) (*Blob, error)
 	}, nil
 }
 
-// Renamed to avoid conflict with the proto method
 func (b *Blob) GetNamespace() namespace.ID {
 	return append([]byte{uint8(b.NamespaceVersion)}, b.Namespace...)
 }
 
 func (b *Blob) MarshalJSON() ([]byte, error) {
-	blob := &Blob{
+	type BlobJSON Blob
+	blob := &BlobJSON{
 		Namespace:        b.GetNamespace(),
 		Data:             b.Data,
 		ShareVersion:     b.ShareVersion,
@@ -66,7 +66,8 @@ func (b *Blob) MarshalJSON() ([]byte, error) {
 }
 
 func (b *Blob) UnmarshalJSON(data []byte) error {
-	var blob Blob
+	type BlobJSON Blob
+	var blob BlobJSON
 	err := json.Unmarshal(data, &blob)
 	if err != nil {
 		return err
