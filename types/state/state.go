@@ -1,12 +1,14 @@
 package state
 
 import (
-	"cosmossdk.io/math"
 	"math/big"
 	"time"
 
-	"github.com/rollkit/celestia-openrpc/types/sdk"
+	"cosmossdk.io/math"
+
 	coretypes "github.com/tendermint/tendermint/types"
+
+	"github.com/rollkit/celestia-openrpc/types/sdk"
 )
 
 // Balance is an alias to the Coin type from Cosmos-SDK.
@@ -58,7 +60,8 @@ type Delegation struct {
 // NOTE: never use new(Dec) or else we will panic unmarshalling into the
 // nil embedded big.Int
 type Dec struct {
-	i *big.Int
+	// TODO(tzdybal) - this type needs more attention!
+	i *big.Int //nolint:unused,structcheck
 }
 
 // QueryDelegationResponse is response type for the Query/UnbondingDelegation
