@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	cosmossdk.io/math v1.0.1
-	github.com/celestiaorg/go-fraud v0.1.0
+	github.com/celestiaorg/go-fraud v0.1.1
 	github.com/celestiaorg/go-header v0.2.7
 	github.com/celestiaorg/nmt v0.15.0
 	github.com/celestiaorg/rsmt2d v0.9.0
