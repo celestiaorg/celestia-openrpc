@@ -48,7 +48,7 @@ func (t *TestSuite) SetupSuite() {
 	// exponential backoff-retry, because the application in the container might not be ready to accept connections yet
 	pool.MaxWait = 60 * time.Second
 	if err := pool.Retry(func() error {
-		resp, err := http.Get("http://localhost:" + resource.GetPort("26659/tcp") + "/balance")
+		resp, err := http.Get(fmt.Sprintf("http://localhost:%s/balance", resource.GetPort("26659/tcp")))
 		if err != nil {
 			return err
 		}
@@ -75,7 +75,6 @@ func (t *TestSuite) SetupSuite() {
 	}
 
 	t.token = buf.String()
-	fmt.Println("token: ", t.token)
 }
 
 func (t *TestSuite) TearDownSuite() {
@@ -89,8 +88,7 @@ func TestIntegrationTestSuite(t *testing.T) {
 }
 
 func (t *TestSuite) TestClient() {
-	fmt.Println("port:", t.resource.GetPort("26658/tcp"))
-	client, err := NewClient(context.Background(), "http://localhost:"+t.resource.GetPort("26658/tcp"), t.token)
+	client, err := NewClient(context.Background(), t.getRPCAddress(), t.token)
 	t.NoError(err)
 	defer client.Close()
 
@@ -105,4 +103,8 @@ func (t *TestSuite) TestClient() {
 	info, err := client.Node.Info(ctx)
 	t.NoError(err)
 	t.NotEmpty(info.APIVersion)
+}
+
+func (t *TestSuite) getRPCAddress() string {
+	return fmt.Sprintf("http://localhost:%s", t.resource.GetPort("26658/tcp"))
 }
