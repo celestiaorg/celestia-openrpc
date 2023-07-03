@@ -12,7 +12,7 @@ require (
 	github.com/gogo/protobuf v1.3.2
 	github.com/libp2p/go-libp2p v0.27.3
 	github.com/ory/dockertest/v3 v3.10.0
-	github.com/stretchr/testify v1.8.2
+	github.com/stretchr/testify v1.8.4
 	github.com/tendermint/tendermint v0.35.9
 )
 
