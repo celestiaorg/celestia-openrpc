@@ -166,8 +166,8 @@ github.com/butuzov/ireturn v0.1.1/go.mod h1:Wh6Zl3IMtTpaIKbmwzqi6olnM9ptYQxxVacM
 github.com/casbin/casbin/v2 v2.37.0/go.mod h1:vByNa/Fchek0KZUgG5wEsl7iFsiviAYKRtgrQfcJqHg=
 github.com/celestiaorg/go-fraud v0.1.1 h1:XZdA5yvkOruoyzrZXVxk1kJ9SbkhJI2aZ+k60+xhbbk=
 github.com/celestiaorg/go-fraud v0.1.1/go.mod h1:yoNM35cKMAkt5Mi/Qx3Wi9bnPilLi8n6RpHZVglTUDs=
-github.com/celestiaorg/go-header v0.2.7 h1:r0X9Dl7lqBkQpwG3ekQHC61n/QdwO6epuIxDkQ4YX4o=
-github.com/celestiaorg/go-header v0.2.7/go.mod h1:i9OpY70+PJ1xPw1IgMfF0Pk6vBD6VWPmjY3bgubJBcU=
+github.com/celestiaorg/go-header v0.2.9 h1:18aFlkUgnSbEI7SU9PBqdwRu9XEKWRsmRiB72u8Mz/k=
+github.com/celestiaorg/go-header v0.2.9/go.mod h1:i9OpY70+PJ1xPw1IgMfF0Pk6vBD6VWPmjY3bgubJBcU=
 github.com/celestiaorg/merkletree v0.0.0-20210714075610-a84dc3ddbbe4 h1:CJdIpo8n5MFP2MwK0gSRcOVlDlFdQJO1p+FqdxYzmvc=
 github.com/celestiaorg/merkletree v0.0.0-20210714075610-a84dc3ddbbe4/go.mod h1:fzuHnhzj1pUygGz+1ZkB3uQbEUL4htqCGJ4Qs2LwMZA=
 github.com/celestiaorg/nmt v0.17.0 h1:/k8YLwJvuHgT/jQ435zXKaDX811+sYEMXL4B/vYdSLU=
