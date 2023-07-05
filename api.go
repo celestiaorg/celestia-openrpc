@@ -18,7 +18,6 @@ import (
 
 	"github.com/rollkit/celestia-openrpc/types/das"
 	"github.com/rollkit/celestia-openrpc/types/header"
-
 	"github.com/rollkit/celestia-openrpc/types/node"
 	"github.com/rollkit/celestia-openrpc/types/share"
 	"github.com/rollkit/celestia-openrpc/types/state"

@@ -2,28 +2,33 @@ package share
 
 import (
 	"github.com/celestiaorg/nmt"
-	"github.com/celestiaorg/rsmt2d"
 
 	"github.com/rollkit/celestia-openrpc/types/core"
-)
-
-var (
-	// DefaultRSMT2DCodec is the default codec creator used for data erasure.
-	DefaultRSMT2DCodec = rsmt2d.NewLeoRSCodec
+	appns "github.com/rollkit/celestia-openrpc/types/namespace"
 )
 
 const (
-	// NamespaveVersionSize is the size of a namespace version in bytes.
-	NamespaceVersionSize = 1
-
-	// NamespaceIDSize is the size of a namespace ID in bytes.
-	NamespaceIDSize = 28
-
-	// NamespaceSize is the size of a namespace (version + ID) in bytes.
-	NamespaceSize = NamespaceVersionSize + NamespaceIDSize
-
 	// ShareSize is the size of a share in bytes.
 	ShareSize = 512
+
+	// ShareInfoBytes is the number of bytes reserved for information. The info
+	// byte contains the share version and a sequence start idicator.
+	ShareInfoBytes = 1
+
+	// SequenceLenBytes is the number of bytes reserved for the sequence length
+	// that is present in the first share of a sequence.
+	SequenceLenBytes = 4
+
+	// ShareVersionZero is the first share version format.
+	ShareVersionZero = uint8(0)
+
+	// DefaultShareVersion is the defacto share version. Use this if you are
+	// unsure of which version to use.
+	DefaultShareVersion = ShareVersionZero
+
+	// CompactShareReservedBytes is the number of bytes reserved for the location of
+	// the first unit (transaction, ISR) in a compact share.
+	CompactShareReservedBytes = 4
 )
 
 // Root represents root commitment to multiple Shares.
@@ -47,10 +52,10 @@ type Share = []byte
 
 // GetNamespace gets the namespace GetNamespace from the share.
 func GetNamespace(s Share) Namespace {
-	return s[:NamespaceSize]
+	return s[:appns.NamespaceSize]
 }
 
 // GetData gets data from the share.
 func GetData(s Share) []byte {
-	return s[NamespaceSize:]
+	return s[appns.NamespaceSize:]
 }
