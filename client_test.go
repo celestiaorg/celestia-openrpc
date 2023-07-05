@@ -141,6 +141,7 @@ func (t *TestSuite) TestRoundTrip() {
 	t.Require().NoError(err)
 	t.Require().NotEmpty(blobs)
 	t.Len(blobs, 1)
+	t.Require().NotNil(blobs[0])
 	t.Equal(data, blobs[0].Data)
 }
 
