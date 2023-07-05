@@ -12,8 +12,12 @@ import (
 	"testing"
 	"time"
 
+	"cosmossdk.io/math"
 	"github.com/ory/dockertest/v3"
 	"github.com/stretchr/testify/suite"
+
+	"github.com/rollkit/celestia-openrpc/types/blob"
+	"github.com/rollkit/celestia-openrpc/types/share"
 )
 
 type TestSuite struct {
@@ -87,6 +91,7 @@ func TestIntegrationTestSuite(t *testing.T) {
 	suite.Run(t, new(TestSuite))
 }
 
+// TestClient is a basic smoke test,  ensuring that client can execute simple methods.
 func (t *TestSuite) TestClient() {
 	client, err := NewClient(context.Background(), t.getRPCAddress(), t.token)
 	t.NoError(err)
@@ -94,8 +99,8 @@ func (t *TestSuite) TestClient() {
 
 	t.NotNil(client)
 
-	ctx, closer := context.WithTimeout(context.Background(), 1*time.Second)
-	defer closer()
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
 
 	resp := client.Share.ProbabilityOfAvailability(ctx)
 	t.NotZero(resp)
@@ -103,6 +108,41 @@ func (t *TestSuite) TestClient() {
 	info, err := client.Node.Info(ctx)
 	t.NoError(err)
 	t.NotEmpty(info.APIVersion)
+}
+
+// TestRoundTrip tests
+func (t *TestSuite) TestRoundTrip() {
+	client, err := NewClient(context.Background(), t.getRPCAddress(), t.token)
+	t.Require().NoError(err)
+	defer client.Close()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+
+	namespace, err := share.NewBlobNamespaceV0([]byte{1, 2, 3, 4, 5, 6, 7, 8})
+	t.Require().NoError(err)
+	t.Require().NotEmpty(namespace)
+
+	data := []byte("hello world")
+	blobBlob, err := blob.NewBlobV0(namespace, data)
+	t.Require().NoError(err)
+
+	// write blob to DA
+	txResponse, err := client.State.SubmitPayForBlob(ctx, math.NewInt(100000000), 200000000, []*blob.Blob{blobBlob})
+	t.Require().NoError(err)
+	t.Require().NotNil(txResponse)
+	t.Zero(txResponse.Code)
+	t.NotZero(txResponse.Height)
+
+	ctx, cancel = context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+	// retrieve data back from DA
+	blobs, err := client.Blob.GetAll(ctx, uint64(txResponse.Height), []share.Namespace{namespace})
+	t.Require().NoError(err)
+	t.Require().NotEmpty(blobs)
+	t.Len(blobs, 1)
+	t.Require().NotNil(blobs[0])
+	t.Equal(data, blobs[0].Data)
 }
 
 func (t *TestSuite) getRPCAddress() string {
