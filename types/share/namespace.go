@@ -7,6 +7,7 @@ import (
 
 	"github.com/celestiaorg/nmt/namespace"
 
+	"github.com/rollkit/celestia-openrpc/types/appconsts"
 	appns "github.com/rollkit/celestia-openrpc/types/namespace"
 )
 
@@ -24,19 +25,21 @@ var (
 // Consists of version byte and namespace ID.
 type Namespace []byte
 
-// NewNamespaceV0 takes a variable size byte slice and creates a version 0 Namespace.
+// NewBlobNamespaceV0 takes a variable size byte slice and creates a valid version 0 Blob Namespace.
 // The byte slice must be <= 10 bytes.
 // If it is less than 10 bytes, it will be left padded to size 10 with 0s.
-func NewNamespaceV0(id []byte) (Namespace, error) {
-	if len(id) > appns.NamespaceVersionZeroIDSize {
-		return nil, fmt.Errorf("namespace id must be <= %v, but it was %v bytes", appns.NamespaceVersionZeroIDSize, len(id))
+// Use predefined namespaces above, if non-blob namespace is needed.
+func NewBlobNamespaceV0(id []byte) (Namespace, error) {
+	if len(id) == 0 || len(id) > appns.NamespaceVersionZeroIDSize {
+		return nil, fmt.Errorf(
+			"namespace id must be > 0 && <= %d, but it was %d bytes", appns.NamespaceVersionZeroIDSize, len(id))
 	}
 
-	n := make(Namespace, appns.NamespaceSize)
+	n := make(Namespace, appconsts.NamespaceSize)
 	// version and zero padding are already set as zero,
-	// so simply copying subNID to the end is enough
+	// so simply copying subNID to the end is enough to comply the V0 spec
 	copy(n[len(n)-len(id):], id)
-	return n, nil
+	return n, n.ValidateForBlob()
 }
 
 // NamespaceFromBytes converts bytes into Namespace and validates it.
@@ -85,8 +88,8 @@ func (n Namespace) Equals(target Namespace) bool {
 
 // Validate checks if the namespace is correct.
 func (n Namespace) Validate() error {
-	if n.Len() != appns.NamespaceSize {
-		return fmt.Errorf("invalid namespace length: expected %d, got %d", appns.NamespaceSize, n.Len())
+	if n.Len() != appconsts.NamespaceSize {
+		return fmt.Errorf("invalid namespace length: expected %d, got %d", appconsts.NamespaceSize, n.Len())
 	}
 	if n.Version() != appns.NamespaceVersionZero && n.Version() != appns.NamespaceVersionMax {
 		return fmt.Errorf("invalid namespace version %v", n.Version())
@@ -100,8 +103,8 @@ func (n Namespace) Validate() error {
 	return nil
 }
 
-// ValidateDataNamespace checks if the Namespace contains real/useful data.
-func (n Namespace) ValidateDataNamespace() error {
+// ValidateForData checks if the Namespace is of real/useful data.
+func (n Namespace) ValidateForData() error {
 	if err := n.Validate(); err != nil {
 		return err
 	}
@@ -111,9 +114,9 @@ func (n Namespace) ValidateDataNamespace() error {
 	return nil
 }
 
-// ValidateBlobNamespace checks if the Namespace is valid blob namespace.
-func (n Namespace) ValidateBlobNamespace() error {
-	if err := n.ValidateDataNamespace(); err != nil {
+// ValidateForBlob checks if the Namespace is valid blob namespace.
+func (n Namespace) ValidateForBlob() error {
+	if err := n.ValidateForData(); err != nil {
 		return err
 	}
 	if bytes.Compare(n, MaxReservedNamespace) < 1 {

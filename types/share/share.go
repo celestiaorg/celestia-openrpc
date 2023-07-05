@@ -7,30 +7,6 @@ import (
 	appns "github.com/rollkit/celestia-openrpc/types/namespace"
 )
 
-const (
-	// ShareSize is the size of a share in bytes.
-	ShareSize = 512
-
-	// ShareInfoBytes is the number of bytes reserved for information. The info
-	// byte contains the share version and a sequence start idicator.
-	ShareInfoBytes = 1
-
-	// SequenceLenBytes is the number of bytes reserved for the sequence length
-	// that is present in the first share of a sequence.
-	SequenceLenBytes = 4
-
-	// ShareVersionZero is the first share version format.
-	ShareVersionZero = uint8(0)
-
-	// DefaultShareVersion is the defacto share version. Use this if you are
-	// unsure of which version to use.
-	DefaultShareVersion = ShareVersionZero
-
-	// CompactShareReservedBytes is the number of bytes reserved for the location of
-	// the first unit (transaction, ISR) in a compact share.
-	CompactShareReservedBytes = 4
-)
-
 // Root represents root commitment to multiple Shares.
 // In practice, it is a commitment to all the Data in a square.
 type Root = core.DataAvailabilityHeader

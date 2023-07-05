@@ -1,26 +1,85 @@
 package blob
 
 import (
+	"bytes"
 	"encoding/json"
+	"errors"
+	"fmt"
 
-	"cosmossdk.io/errors"
-	"github.com/celestiaorg/nmt/namespace"
+	"github.com/celestiaorg/nmt"
 
-	appns "github.com/rollkit/celestia-openrpc/types/namespace"
+	"github.com/rollkit/celestia-openrpc/types/appconsts"
+	"github.com/rollkit/celestia-openrpc/types/share"
+)
+
+const (
+	// NMTIgnoreMaxNamespace is currently used value for IgnoreMaxNamespace option in NMT.
+	// IgnoreMaxNamespace defines whether the largest possible Namespace MAX_NID should be 'ignored'.
+	// If set to true, this allows for shorter proofs in particular use-cases.
+	NMTIgnoreMaxNamespace = true
 )
 
 var (
-	ErrZeroBlobSize = errors.Register("blob", 11124, "cannot use zero blob size")
+	ErrBlobNotFound = errors.New("blob: not found")
+	ErrInvalidProof = errors.New("blob: invalid proof")
 )
 
+// Commitment is a Merkle Root of the subtree built from shares of the Blob.
+// It is computed by splitting the blob into shares and building the Merkle subtree to be included
+// after Submit.
 type Commitment []byte
 
-type Proof struct {
-	Start uint32   `protobuf:"varint,1,opt,name=start,proto3" json:"start,omitempty"`
-	End   uint32   `protobuf:"varint,2,opt,name=end,proto3" json:"end,omitempty"`
-	Nodes [][]byte `protobuf:"bytes,3,rep,name=nodes,proto3" json:"nodes,omitempty"`
+func (com Commitment) String() string {
+	return string(com)
 }
 
+// Equal ensures that commitments are the same
+func (com Commitment) Equal(c Commitment) bool {
+	return bytes.Equal(com, c)
+}
+
+// Proof is a collection of nmt.Proofs that verifies the inclusion of the data.
+type Proof []*nmt.Proof
+
+func (p Proof) Len() int { return len(p) }
+
+type jsonProof struct {
+	Start int      `json:"start"`
+	End   int      `json:"end"`
+	Nodes [][]byte `json:"nodes"`
+}
+
+func (p *Proof) MarshalJSON() ([]byte, error) {
+	proofs := make([]jsonProof, 0, p.Len())
+	for _, pp := range *p {
+		proofs = append(proofs, jsonProof{
+			Start: pp.Start(),
+			End:   pp.End(),
+			Nodes: pp.Nodes(),
+		})
+	}
+
+	return json.Marshal(proofs)
+}
+
+func (p *Proof) UnmarshalJSON(data []byte) error {
+	var proofs []jsonProof
+	err := json.Unmarshal(data, &proofs)
+	if err != nil {
+		return err
+	}
+
+	nmtProofs := make([]*nmt.Proof, len(proofs))
+	for i, jProof := range proofs {
+		nmtProof := nmt.NewInclusionProof(jProof.Start, jProof.End, jProof.Nodes, NMTIgnoreMaxNamespace)
+		nmtProofs[i] = &nmtProof
+	}
+
+	*p = nmtProofs
+	return nil
+}
+
+// Blob represents any application-specific binary data that anyone can submit to Celestia.
 type Blob struct {
 	Namespace        []byte `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	Data             []byte `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
@@ -29,54 +88,58 @@ type Blob struct {
 	Commitment       []byte `protobuf:"bytes,5,opt,name=commitment,proto3" json:"commitment,omitempty"`
 }
 
-// NewBlob creates a new coretypes.Blob from the provided data after performing
-// basic stateless checks over it.
-func NewBlob(ns appns.Namespace, blob []byte, shareVersion uint8) (*Blob, error) {
-	err := ns.ValidateBlobNamespace()
-	if err != nil {
+// NewBlobV0 constructs a new blob from the provided Namespace and data.
+// The blob will be formatted as v0 shares.
+func NewBlobV0(namespace share.Namespace, data []byte) (*Blob, error) {
+	return NewBlob(appconsts.ShareVersionZero, namespace, data)
+}
+
+// NewBlob constructs a new blob from the provided Namespace, data and share version.
+func NewBlob(shareVersion uint8, namespace share.Namespace, data []byte) (*Blob, error) {
+	if len(data) == 0 || len(data) > appconsts.DefaultMaxBytes {
+		return nil, fmt.Errorf("blob data must be > 0 && <= %d, but it was %d bytes", appconsts.DefaultMaxBytes, len(data))
+	}
+	if err := namespace.ValidateForBlob(); err != nil {
 		return nil, err
 	}
 
-	if len(blob) == 0 {
-		return nil, ErrZeroBlobSize
-	}
-
 	return &Blob{
-		Namespace:        ns.ID,
-		Data:             blob,
+		Namespace:        namespace,
+		Data:             data,
 		ShareVersion:     uint32(shareVersion),
-		NamespaceVersion: uint32(ns.Version),
+		NamespaceVersion: 0,
+		Commitment:       []byte{},
 	}, nil
 }
 
-func (b *Blob) GetNamespace() namespace.ID {
-	return append([]byte{uint8(b.NamespaceVersion)}, b.Namespace...)
+type jsonBlob struct {
+	Namespace    share.Namespace `json:"namespace"`
+	Data         []byte          `json:"data"`
+	ShareVersion uint32          `json:"share_version"`
+	Commitment   Commitment      `json:"commitment"`
 }
 
 func (b *Blob) MarshalJSON() ([]byte, error) {
-	type BlobJSON Blob
-	blob := &BlobJSON{
-		Namespace:        b.GetNamespace(),
-		Data:             b.Data,
-		ShareVersion:     b.ShareVersion,
-		NamespaceVersion: b.NamespaceVersion,
-		Commitment:       b.Commitment,
+	blob := &jsonBlob{
+		Namespace:    b.Namespace,
+		Data:         b.Data,
+		ShareVersion: b.ShareVersion,
+		Commitment:   b.Commitment,
 	}
 	return json.Marshal(blob)
 }
 
 func (b *Blob) UnmarshalJSON(data []byte) error {
-	type BlobJSON Blob
-	var blob BlobJSON
+	var blob jsonBlob
 	err := json.Unmarshal(data, &blob)
 	if err != nil {
 		return err
 	}
 
-	b.NamespaceVersion = uint32(blob.Namespace[0])
-	b.Namespace = blob.Namespace[1:]
+	b.NamespaceVersion = uint32(blob.Namespace.Version())
 	b.Data = blob.Data
 	b.ShareVersion = blob.ShareVersion
 	b.Commitment = blob.Commitment
+	b.Namespace = blob.Namespace
 	return nil
 }
