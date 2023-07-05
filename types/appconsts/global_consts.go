@@ -2,6 +2,8 @@ package appconsts
 
 import (
 	"math"
+
+	"github.com/celestiaorg/rsmt2d"
 )
 
 // These constants were originally sourced from:
@@ -68,4 +70,9 @@ const (
 
 	// MaxShareVersion is the maximum value a share version can be.
 	MaxShareVersion = 127
+)
+
+var (
+	// DefaultCodec is the default codec creator used for data erasure.
+	DefaultCodec = rsmt2d.NewLeoRSCodec
 )
