@@ -8,7 +8,6 @@ import (
 	"github.com/celestiaorg/rsmt2d"
 	"github.com/tendermint/tendermint/crypto"
 	"github.com/tendermint/tendermint/crypto/merkle"
-	"github.com/tendermint/tendermint/libs/bits"
 	tmbytes "github.com/tendermint/tendermint/libs/bytes"
 	tmversion "github.com/tendermint/tendermint/proto/tendermint/version"
 )
@@ -128,6 +127,7 @@ type DataAvailabilityHeader struct {
 	ColumnRoots [][]byte `json:"column_roots"`
 	// hash is the Merkle root of the row and column roots. This field is the
 	// memoized result from `Hash()`.
+	hash []byte
 }
 
 // NewDataAvailabilityHeader generates a DataAvailability header using the provided square size and shares
