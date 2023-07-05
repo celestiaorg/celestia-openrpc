@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/celestiaorg/nmt"
+
 	"github.com/rollkit/celestia-openrpc/types/appconsts"
 	"github.com/rollkit/celestia-openrpc/types/core"
 )
