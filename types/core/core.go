@@ -1,9 +1,13 @@
 package core
 
 import (
+	"bytes"
+	"fmt"
 	"time"
 
+	"github.com/celestiaorg/rsmt2d"
 	"github.com/tendermint/tendermint/crypto"
+	"github.com/tendermint/tendermint/crypto/merkle"
 	tmbytes "github.com/tendermint/tendermint/libs/bytes"
 	tmversion "github.com/tendermint/tendermint/proto/tendermint/version"
 )
@@ -17,7 +21,7 @@ type Header struct {
 	// basic block info
 	Version tmversion.Consensus `json:"version"`
 	ChainID string              `json:"chain_id"`
-	Height  int64               `json:"height"`
+	Height  int64               `json:"height,string"`
 	Time    time.Time           `json:"time"`
 
 	// prev block info
@@ -118,9 +122,57 @@ type Validator struct {
 // https://github.com/celestiaorg/celestia-specs/blob/master/src/specs/data_structures.md#availabledataheader
 type DataAvailabilityHeader struct {
 	// RowRoot_j = root((M_{j,1} || M_{j,2} || ... || M_{j,2k} ))
-	RowsRoots [][]byte `json:"row_roots"`
+	RowRoots [][]byte `json:"row_roots"`
 	// ColumnRoot_j = root((M_{1,j} || M_{2,j} || ... || M_{2k,j} ))
 	ColumnRoots [][]byte `json:"column_roots"`
 	// hash is the Merkle root of the row and column roots. This field is the
 	// memoized result from `Hash()`.
+	hash []byte
+}
+
+// NewDataAvailabilityHeader generates a DataAvailability header using the provided square size and shares
+func NewDataAvailabilityHeader(eds *rsmt2d.ExtendedDataSquare) DataAvailabilityHeader {
+	// generate the row and col roots using the EDS
+	dah := DataAvailabilityHeader{
+		RowRoots:    eds.RowRoots(),
+		ColumnRoots: eds.ColRoots(),
+	}
+
+	// generate the hash of the data using the new roots
+	dah.Hash()
+
+	return dah
+}
+
+// String returns hex representation of merkle hash of the DAHeader.
+func (dah *DataAvailabilityHeader) String() string {
+	if dah == nil {
+		return "<nil DAHeader>"
+	}
+	return fmt.Sprintf("%X", dah.Hash())
+}
+
+// Equals checks equality of two DAHeaders.
+func (dah *DataAvailabilityHeader) Equals(to *DataAvailabilityHeader) bool {
+	return bytes.Equal(dah.Hash(), to.Hash())
+}
+
+// Hash computes the Merkle root of the row and column roots. Hash memoizes the
+// result in `DataAvailabilityHeader.hash`.
+func (dah *DataAvailabilityHeader) Hash() []byte {
+	if dah == nil {
+		return merkle.HashFromByteSlices(nil)
+	}
+	if len(dah.hash) != 0 {
+		return dah.hash
+	}
+
+	rowsCount := len(dah.RowRoots)
+	slices := make([][]byte, rowsCount+rowsCount)
+	copy(slices[0:rowsCount], dah.RowRoots)
+	copy(slices[rowsCount:], dah.ColumnRoots)
+	// The single data root is computed using a simple binary merkle tree.
+	// Effectively being root(rowRoots || columnRoots):
+	dah.hash = merkle.HashFromByteSlices(slices)
+	return dah.hash
 }

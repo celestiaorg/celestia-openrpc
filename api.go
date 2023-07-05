@@ -14,9 +14,9 @@ import (
 	"github.com/libp2p/go-libp2p/core/protocol"
 	rcmgr "github.com/libp2p/go-libp2p/p2p/host/resource-manager"
 
+	"github.com/rollkit/celestia-openrpc/types/blob"
 	"github.com/rollkit/celestia-openrpc/types/das"
 	"github.com/rollkit/celestia-openrpc/types/header"
-	"github.com/rollkit/celestia-openrpc/types/namespace"
 	"github.com/rollkit/celestia-openrpc/types/node"
 	"github.com/rollkit/celestia-openrpc/types/share"
 	"github.com/rollkit/celestia-openrpc/types/state"
@@ -34,6 +34,14 @@ type Proof struct {
 type DASAPI struct {
 	SamplingStats func(ctx context.Context) (das.SamplingStats, error) `perm:"read"`
 	WaitCatchUp   func(ctx context.Context) error                      `perm:"read"`
+}
+
+type BlobAPI struct {
+	Submit   func(context.Context, []*blob.Blob) (uint64, error)                                        `perm:"write"`
+	Get      func(context.Context, uint64, share.Namespace, blob.Commitment) (*blob.Blob, error)        `perm:"read"`
+	GetAll   func(context.Context, uint64, []share.Namespace) ([]*blob.Blob, error)                     `perm:"read"`
+	GetProof func(context.Context, uint64, share.Namespace, blob.Commitment) (*blob.Proof, error)       `perm:"read"`
+	Included func(context.Context, uint64, share.Namespace, *blob.Proof, blob.Commitment) (bool, error) `perm:"read"`
 }
 
 type HeaderAPI struct {
@@ -68,10 +76,9 @@ type StateAPI struct {
 	SubmitTx         func(ctx context.Context, tx state.Tx) (*state.TxResponse, error) `perm:"write"`
 	SubmitPayForBlob func(
 		ctx context.Context,
-		nID namespace.ID,
-		data []byte,
 		fee state.Int,
 		gasLim uint64,
+		blobs []*blob.Blob,
 	) (*state.TxResponse, error) `perm:"write"`
 	CancelUnbondingDelegation func(
 		ctx context.Context,
@@ -132,7 +139,7 @@ type ShareAPI struct {
 	GetSharesByNamespace func(
 		ctx context.Context,
 		root *share.Root,
-		namespace namespace.ID,
+		namespace share.Namespace,
 	) (share.NamespacedShares, error) `perm:"public"`
 }
 type P2PAPI struct {

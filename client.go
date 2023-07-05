@@ -12,6 +12,7 @@ const AuthKey = "Authorization"
 
 type Client struct {
 	Fraud  FraudAPI
+	Blob   BlobAPI
 	Header HeaderAPI
 	State  StateAPI
 	Share  ShareAPI
@@ -45,12 +46,16 @@ func (c *Client) Close() {
 }
 
 func NewClient(ctx context.Context, addr string, token string) (*Client, error) {
-	authHeader := http.Header{AuthKey: []string{fmt.Sprintf("Bearer %s", token)}}
+	var authHeader http.Header
+	if token != "" {
+		authHeader = http.Header{AuthKey: []string{fmt.Sprintf("Bearer %s", token)}}
+	}
 
 	var client Client
 
 	modules := map[string]interface{}{
 		"fraud":  &client.Fraud,
+		"blob":   &client.Blob,
 		"header": &client.Header,
 		"state":  &client.State,
 		"share":  &client.Share,
