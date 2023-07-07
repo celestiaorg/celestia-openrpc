@@ -6,7 +6,7 @@ import (
 
 	"cosmossdk.io/math"
 
-	coretypes "github.com/tendermint/tendermint/types"
+	coretypes "github.com/cometbft/cometbft/types"
 
 	"github.com/rollkit/celestia-openrpc/types/sdk"
 )
