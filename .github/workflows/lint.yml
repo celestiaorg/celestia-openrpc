@@ -39,10 +39,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: celestiaorg/.github/.github/actions/yamllint@v0.2.0
+      - uses: celestiaorg/.github/.github/actions/yamllint@v0.2.2
 
   markdown-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: celestiaorg/.github/.github/actions/markdown-lint@v0.2.0
+      - uses: celestiaorg/.github/.github/actions/markdown-lint@v0.2.2
