@@ -103,6 +103,8 @@ func NewBlob(shareVersion uint8, namespace share.Namespace, data []byte) (*Blob,
 		return nil, err
 	}
 
+	_, _ = CreateCommitment(nil)
+
 	return &Blob{
 		Namespace:        namespace,
 		Data:             data,

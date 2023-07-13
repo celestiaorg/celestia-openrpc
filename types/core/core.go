@@ -130,18 +130,27 @@ type DataAvailabilityHeader struct {
 	hash []byte
 }
 
-// NewDataAvailabilityHeader generates a DataAvailability header using the provided square size and shares
-func NewDataAvailabilityHeader(eds *rsmt2d.ExtendedDataSquare) DataAvailabilityHeader {
-	// generate the row and col roots using the EDS
-	dah := DataAvailabilityHeader{
-		RowRoots:    eds.RowRoots(),
-		ColumnRoots: eds.ColRoots(),
+// NewDataAvailabilityHeader generates a DataAvailability header using the
+// provided extended data square.
+func NewDataAvailabilityHeader(eds *rsmt2d.ExtendedDataSquare) (DataAvailabilityHeader, error) {
+	rowRoots, err := eds.RowRoots()
+	if err != nil {
+		return DataAvailabilityHeader{}, err
+	}
+	colRoots, err := eds.ColRoots()
+	if err != nil {
+		return DataAvailabilityHeader{}, err
 	}
 
-	// generate the hash of the data using the new roots
+	dah := DataAvailabilityHeader{
+		RowRoots:    rowRoots,
+		ColumnRoots: colRoots,
+	}
+
+	// Generate the hash of the data using the new roots
 	dah.Hash()
 
-	return dah
+	return dah, nil
 }
 
 // String returns hex representation of merkle hash of the DAHeader.
