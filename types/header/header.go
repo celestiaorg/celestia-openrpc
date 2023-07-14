@@ -3,7 +3,7 @@ package header
 import (
 	"encoding/json"
 
-	tmjson "github.com/tendermint/tendermint/libs/json"
+	cmjson "github.com/cometbft/cometbft/libs/json"
 
 	"github.com/rollkit/celestia-openrpc/types/core"
 )
@@ -27,11 +27,11 @@ type ExtendedHeader struct {
 // to be able to unmarshal the crypto.PubKey type back from JSON.
 func (eh *ExtendedHeader) MarshalJSON() ([]byte, error) {
 	type Alias ExtendedHeader
-	validatorSet, err := tmjson.Marshal(eh.ValidatorSet)
+	validatorSet, err := cmjson.Marshal(eh.ValidatorSet)
 	if err != nil {
 		return nil, err
 	}
-	rawHeader, err := tmjson.Marshal(eh.RawHeader)
+	rawHeader, err := cmjson.Marshal(eh.RawHeader)
 	if err != nil {
 		return nil, err
 	}
@@ -62,11 +62,11 @@ func (eh *ExtendedHeader) UnmarshalJSON(data []byte) error {
 	}
 
 	valSet := new(core.ValidatorSet)
-	if err := tmjson.Unmarshal(aux.ValidatorSet, valSet); err != nil {
+	if err := cmjson.Unmarshal(aux.ValidatorSet, valSet); err != nil {
 		return err
 	}
 	rawHeader := new(RawHeader)
-	if err := tmjson.Unmarshal(aux.RawHeader, rawHeader); err != nil {
+	if err := cmjson.Unmarshal(aux.RawHeader, rawHeader); err != nil {
 		return err
 	}
 
