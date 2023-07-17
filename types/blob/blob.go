@@ -81,6 +81,7 @@ func (p *Proof) UnmarshalJSON(data []byte) error {
 
 // Blob represents any application-specific binary data that anyone can submit to Celestia.
 type Blob struct {
+	// NOTE: Namespace _must_ include both version and id bytes
 	Namespace        []byte `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	Data             []byte `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
 	ShareVersion     uint32 `protobuf:"varint,3,opt,name=share_version,json=shareVersion,proto3" json:"share_version,omitempty"`
@@ -104,7 +105,7 @@ func NewBlob(shareVersion uint8, namespace share.Namespace, data []byte) (*Blob,
 	}
 
 	blob := &Blob{
-		Namespace:        namespace.ID(),
+		Namespace:        namespace,
 		Data:             data,
 		ShareVersion:     uint32(shareVersion),
 		NamespaceVersion: uint32(namespace.Version()),
