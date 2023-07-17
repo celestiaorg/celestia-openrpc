@@ -103,13 +103,19 @@ func NewBlob(shareVersion uint8, namespace share.Namespace, data []byte) (*Blob,
 		return nil, err
 	}
 
-	return &Blob{
-		Namespace:        namespace,
+	blob := &Blob{
+		Namespace:        namespace.ID(),
 		Data:             data,
 		ShareVersion:     uint32(shareVersion),
-		NamespaceVersion: 0,
-		Commitment:       []byte{},
-	}, nil
+		NamespaceVersion: uint32(namespace.Version()),
+	}
+
+	com, err := CreateCommitment(blob)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Blob{Data: data, Commitment: com, Namespace: namespace}, nil
 }
 
 type jsonBlob struct {
