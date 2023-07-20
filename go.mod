@@ -10,7 +10,7 @@ require (
 	github.com/celestiaorg/rsmt2d v0.10.0
 	github.com/cometbft/cometbft v0.37.0
 	github.com/filecoin-project/go-jsonrpc v0.3.1
-	github.com/gogo/protobuf v1.3.3
+	github.com/gogo/protobuf v1.3.2
 	github.com/libp2p/go-libp2p v0.27.3
 	github.com/ory/dockertest/v3 v3.10.0
 	github.com/stretchr/testify v1.8.4
@@ -106,5 +106,3 @@ require (
 	gotest.tools/v3 v3.4.0 // indirect
 	lukechampine.com/blake3 v1.1.7 // indirect
 )
-
-replace github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
