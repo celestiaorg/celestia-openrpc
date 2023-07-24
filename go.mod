@@ -4,7 +4,6 @@ go 1.20
 
 require (
 	cosmossdk.io/math v1.0.1
-	github.com/celestiaorg/go-fraud v0.1.2
 	github.com/celestiaorg/go-header v0.2.12
 	github.com/celestiaorg/nmt v0.17.0
 	github.com/celestiaorg/rsmt2d v0.9.0
@@ -44,9 +43,7 @@ require (
 	github.com/hashicorp/golang-lru/v2 v2.0.2 // indirect
 	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/ipfs/go-cid v0.4.1 // indirect
-	github.com/ipfs/go-datastore v0.6.0 // indirect
 	github.com/ipfs/go-log/v2 v2.5.1 // indirect
-	github.com/jbenet/goprocess v0.1.4 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/klauspost/reedsolomon v1.11.1 // indirect
 	github.com/libp2p/go-buffer-pool v0.1.0 // indirect

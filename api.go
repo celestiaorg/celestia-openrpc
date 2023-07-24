@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 
-	"github.com/celestiaorg/go-fraud"
 	libhead "github.com/celestiaorg/go-header"
 	"github.com/celestiaorg/go-header/sync"
 	"github.com/celestiaorg/rsmt2d"
@@ -16,6 +15,7 @@ import (
 
 	"github.com/rollkit/celestia-openrpc/types/blob"
 	"github.com/rollkit/celestia-openrpc/types/das"
+	"github.com/rollkit/celestia-openrpc/types/fraud"
 	"github.com/rollkit/celestia-openrpc/types/header"
 	"github.com/rollkit/celestia-openrpc/types/node"
 	"github.com/rollkit/celestia-openrpc/types/share"
