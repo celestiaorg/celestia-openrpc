@@ -7,7 +7,7 @@ require (
 	github.com/celestiaorg/go-fraud v0.1.2
 	github.com/celestiaorg/go-header v0.2.12
 	github.com/celestiaorg/nmt v0.17.0
-	github.com/celestiaorg/rsmt2d v0.9.0
+	github.com/celestiaorg/rsmt2d v0.10.0
 	github.com/cometbft/cometbft v0.37.0
 	github.com/filecoin-project/go-jsonrpc v0.3.1
 	github.com/gogo/protobuf v1.3.2
