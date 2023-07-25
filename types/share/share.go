@@ -12,55 +12,6 @@ import (
 	"github.com/rollkit/celestia-openrpc/types/namespace"
 )
 
-// ParseReservedBytes parses a byte slice of length
-// appconsts.CompactShareReservedBytes into a byteIndex.
-func ParseReservedBytes(reservedBytes []byte) (uint32, error) {
-	if len(reservedBytes) != appconsts.CompactShareReservedBytes {
-		return 0, fmt.Errorf("reserved bytes must be of length %d", appconsts.CompactShareReservedBytes)
-	}
-	byteIndex := binary.BigEndian.Uint32(reservedBytes)
-	if appconsts.ShareSize <= byteIndex {
-		return 0, fmt.Errorf("byteIndex must be less than share size %d", appconsts.ShareSize)
-	}
-	return byteIndex, nil
-}
-
-// InfoByte is a byte with the following structure: the first 7 bits are
-// reserved for version information in big endian form (initially `0000000`).
-// The last bit is a "sequence start indicator", that is `1` if this is the
-// first share of a sequence and `0` if this is a continuation share.
-type InfoByte byte
-
-func NewInfoByte(version uint8, isSequenceStart bool) (InfoByte, error) {
-	if version > appconsts.MaxShareVersion {
-		return 0, fmt.Errorf("version %d must be less than or equal to %d", version, appconsts.MaxShareVersion)
-	}
-
-	prefix := version << 1
-	if isSequenceStart {
-		return InfoByte(prefix + 1), nil
-	}
-	return InfoByte(prefix), nil
-}
-
-// Version returns the version encoded in this InfoByte. Version is
-// expected to be between 0 and appconsts.MaxShareVersion (inclusive).
-func (i InfoByte) Version() uint8 {
-	version := uint8(i) >> 1
-	return version
-}
-
-// IsSequenceStart returns whether this share is the start of a sequence.
-func (i InfoByte) IsSequenceStart() bool {
-	return uint(i)%2 == 1
-}
-
-func ParseInfoByte(i byte) (InfoByte, error) {
-	isSequenceStart := i%2 == 1
-	version := uint8(i) >> 1
-	return NewInfoByte(version, isSequenceStart)
-}
-
 // Root represents root commitment to multiple Shares.
 // In practice, it is a commitment to all the Data in a square.
 type Root = core.DataAvailabilityHeader

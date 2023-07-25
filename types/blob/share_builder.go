@@ -101,7 +101,7 @@ func (b *Builder) ZeroPadIfNecessary() (bytesOfPadding int) {
 // isEmptyReservedBytes returns true if the reserved bytes are empty.
 func (b *Builder) isEmptyReservedBytes() (bool, error) {
 	indexOfReservedBytes := b.indexOfReservedBytes()
-	reservedBytes, err := ParseReservedBytes(b.rawShareData[indexOfReservedBytes : indexOfReservedBytes+appconsts.CompactShareReservedBytes])
+	reservedBytes, err := share.ParseReservedBytes(b.rawShareData[indexOfReservedBytes : indexOfReservedBytes+appconsts.CompactShareReservedBytes])
 	if err != nil {
 		return false, err
 	}
@@ -141,7 +141,7 @@ func (b *Builder) MaybeWriteReservedBytes() error {
 	}
 
 	byteIndexOfNextUnit := len(b.rawShareData)
-	reservedBytes, err := NewReservedBytes(uint32(byteIndexOfNextUnit))
+	reservedBytes, err := share.NewReservedBytes(uint32(byteIndexOfNextUnit))
 	if err != nil {
 		return err
 	}
@@ -183,7 +183,7 @@ func (b *Builder) FlipSequenceStart() {
 
 func (b *Builder) prepareCompactShare() error {
 	shareData := make([]byte, 0, appconsts.ShareSize)
-	infoByte, err := NewInfoByte(b.shareVersion, b.isFirstShare)
+	infoByte, err := share.NewInfoByte(b.shareVersion, b.isFirstShare)
 	if err != nil {
 		return err
 	}
@@ -206,7 +206,7 @@ func (b *Builder) prepareCompactShare() error {
 
 func (b *Builder) prepareSparseShare() error {
 	shareData := make([]byte, 0, appconsts.ShareSize)
-	infoByte, err := NewInfoByte(b.shareVersion, b.isFirstShare)
+	infoByte, err := share.NewInfoByte(b.shareVersion, b.isFirstShare)
 	if err != nil {
 		return err
 	}
