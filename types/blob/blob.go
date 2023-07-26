@@ -9,7 +9,7 @@ import (
 	"github.com/celestiaorg/nmt"
 
 	"github.com/rollkit/celestia-openrpc/types/appconsts"
-	"github.com/rollkit/celestia-openrpc/types/namespace"
+	"github.com/rollkit/celestia-openrpc/types/share"
 )
 
 const (
@@ -80,10 +80,10 @@ func (p *Proof) UnmarshalJSON(data []byte) error {
 }
 
 type jsonBlob struct {
-	Namespace    []byte     `json:"namespace"`
-	Data         []byte     `json:"data"`
-	ShareVersion uint32     `json:"share_version"`
-	Commitment   Commitment `json:"commitment"`
+	Namespace    share.Namespace `json:"namespace"`
+	Data         []byte          `json:"data"`
+	ShareVersion uint32          `json:"share_version"`
+	Commitment   Commitment      `json:"commitment"`
 }
 
 // Blob represents any application-specific binary data that anyone can submit to Celestia.
@@ -97,12 +97,8 @@ type Blob struct {
 }
 
 func (b *Blob) MarshalJSON() ([]byte, error) {
-	nsNamespace, err := namespace.From(b.Namespace)
-	if err != nil {
-		return nil, err
-	}
 	blob := &jsonBlob{
-		Namespace:    nsNamespace.Bytes(),
+		Namespace:    b.Namespace,
 		Data:         b.Data,
 		ShareVersion: b.ShareVersion,
 		Commitment:   b.Commitment,
@@ -116,12 +112,7 @@ func (b *Blob) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-
-	nsNamespace, err := namespace.From(blob.Namespace)
-	if err != nil {
-		return err
-	}
-	b.NamespaceVersion = uint32(nsNamespace.Version)
+	b.NamespaceVersion = uint32(blob.Namespace.Version())
 	b.Data = blob.Data
 	b.ShareVersion = blob.ShareVersion
 	b.Commitment = blob.Commitment
@@ -131,30 +122,24 @@ func (b *Blob) UnmarshalJSON(data []byte) error {
 
 // NewBlobV0 constructs a new blob from the provided Namespace and data.
 // The blob will be formatted as v0 shares.
-func NewBlobV0(namespace namespace.Namespace, data []byte) (*Blob, error) {
+func NewBlobV0(namespace share.Namespace, data []byte) (*Blob, error) {
 	return NewBlob(appconsts.ShareVersionZero, namespace, data)
 }
 
 // NewBlob constructs a new blob from the provided Namespace, data and share version.
-func NewBlob(shareVersion uint8, namespace namespace.Namespace, data []byte) (*Blob, error) {
+func NewBlob(shareVersion uint8, namespace share.Namespace, data []byte) (*Blob, error) {
 	if len(data) == 0 || len(data) > appconsts.DefaultMaxBytes {
 		return nil, fmt.Errorf("blob data must be > 0 && <= %d, but it was %d bytes", appconsts.DefaultMaxBytes, len(data))
 	}
-	if err := namespace.ValidateBlobNamespace(); err != nil {
+	if err := namespace.ValidateForBlob(); err != nil {
 		return nil, err
 	}
 
-	blob := &Blob{
-		Namespace:        namespace.Bytes(),
+	return &Blob{
+		Namespace:        namespace,
 		Data:             data,
 		ShareVersion:     uint32(shareVersion),
-		NamespaceVersion: uint32(namespace.Version),
-	}
-
-	com, err := CreateCommitment(blob)
-	if err != nil {
-		return nil, err
-	}
-
-	return &Blob{Data: data, Commitment: com, Namespace: namespace.Bytes()}, nil
+		NamespaceVersion: 0,
+		Commitment:       []byte{},
+	}, nil
 }

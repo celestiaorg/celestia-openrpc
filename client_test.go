@@ -16,7 +16,6 @@ import (
 	"github.com/stretchr/testify/suite"
 
 	"github.com/rollkit/celestia-openrpc/types/blob"
-	"github.com/rollkit/celestia-openrpc/types/namespace"
 	"github.com/rollkit/celestia-openrpc/types/share"
 )
 
@@ -119,12 +118,12 @@ func (t *TestSuite) TestRoundTrip() {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
-	nsBytes := []byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
-	nsNamespace := namespace.MustNewV0(nsBytes)
-	t.Require().NotEmpty(nsNamespace)
+	namespace, err := share.NewBlobNamespaceV0([]byte{1, 2, 3, 4, 5, 6, 7, 8})
+	t.Require().NoError(err)
+	t.Require().NotEmpty(namespace)
 
 	data := []byte("hello world")
-	blobBlob, err := blob.NewBlobV0(nsNamespace, data)
+	blobBlob, err := blob.NewBlobV0(namespace, data)
 	t.Require().NoError(err)
 
 	com, err := blob.CreateCommitment(blobBlob)
@@ -135,14 +134,10 @@ func (t *TestSuite) TestRoundTrip() {
 	t.Require().NoError(err)
 	t.Require().NotZero(height)
 
-	nsShare, err := share.NewBlobNamespaceV0(nsBytes)
-	t.Require().NoError(err)
-	t.Require().NotEmpty(nsShare)
-
 	ctx, cancel = context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 	// retrieve data back from DA
-	daBlob, err := client.Blob.Get(ctx, height, nsShare, com)
+	daBlob, err := client.Blob.Get(ctx, height, namespace, com)
 	t.Require().NoError(err)
 	t.Require().NotNil(daBlob)
 	t.Equal(data, daBlob.Data)
