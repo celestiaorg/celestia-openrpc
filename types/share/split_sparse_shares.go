@@ -1,4 +1,4 @@
-package blob
+package share
 
 import (
 	"errors"
@@ -8,14 +8,13 @@ import (
 
 	"github.com/rollkit/celestia-openrpc/types/appconsts"
 	"github.com/rollkit/celestia-openrpc/types/namespace"
-	"github.com/rollkit/celestia-openrpc/types/share"
 )
 
 // SparseShareSplitter lazily splits blobs into shares that will eventually be
 // included in a data square. It also has methods to help progressively count
 // how many shares the blobs written take up.
 type SparseShareSplitter struct {
-	shares []share.Share
+	shares []Share
 }
 
 func NewSparseShareSplitter() *SparseShareSplitter {
@@ -24,19 +23,19 @@ func NewSparseShareSplitter() *SparseShareSplitter {
 
 // Write writes the provided blob to this sparse share splitter. It returns an
 // error or nil if no error is encountered.
-func (sss *SparseShareSplitter) Write(blob Blob) error {
-	if !slices.Contains(appconsts.SupportedShareVersions, uint8(blob.ShareVersion)) {
-		return fmt.Errorf("unsupported share version: %d", blob.ShareVersion)
+func (sss *SparseShareSplitter) Write(shareVersion uint32, ns, data []byte) error {
+	if !slices.Contains(appconsts.SupportedShareVersions, uint8(shareVersion)) {
+		return fmt.Errorf("unsupported share version: %d", shareVersion)
 	}
 
-	rawData := blob.Data
-	blobNamespace, err := namespace.From(blob.Namespace)
+	rawData := data
+	blobNamespace, err := namespace.From(ns)
 	if err != nil {
 		return err
 	}
 
 	// First share
-	b, err := NewBuilder(blobNamespace, uint8(blob.ShareVersion), true).Init()
+	b, err := NewBuilder(blobNamespace, uint8(shareVersion), true).Init()
 	if err != nil {
 		return err
 	}
@@ -58,7 +57,7 @@ func (sss *SparseShareSplitter) Write(blob Blob) error {
 		}
 		sss.shares = append(sss.shares, *share)
 
-		b, err = NewBuilder(blobNamespace, uint8(blob.ShareVersion), false).Init()
+		b, err = NewBuilder(blobNamespace, uint8(shareVersion), false).Init()
 		if err != nil {
 			return err
 		}
@@ -69,7 +68,7 @@ func (sss *SparseShareSplitter) Write(blob Blob) error {
 }
 
 // WriteNamespacePaddingShares adds padding shares with the namespace of the
-// last written share. This is useful to follow the non-interactive default
+// last written  This is useful to follow the non-interactive default
 // rules. This function assumes that at least one share has already been
 // written.
 func (sss *SparseShareSplitter) WriteNamespacePaddingShares(count int) error {
@@ -97,7 +96,7 @@ func (sss *SparseShareSplitter) WriteNamespacePaddingShares(count int) error {
 }
 
 // Export finalizes and returns the underlying shares.
-func (sss *SparseShareSplitter) Export() []share.Share {
+func (sss *SparseShareSplitter) Export() []Share {
 	return sss.shares
 }
 

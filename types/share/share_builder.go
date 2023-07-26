@@ -1,4 +1,4 @@
-package blob
+package share
 
 import (
 	"encoding/binary"
@@ -6,7 +6,6 @@ import (
 
 	"github.com/rollkit/celestia-openrpc/types/appconsts"
 	"github.com/rollkit/celestia-openrpc/types/namespace"
-	"github.com/rollkit/celestia-openrpc/types/share"
 )
 
 type Builder struct {
@@ -77,8 +76,8 @@ func (b *Builder) AddData(rawData []byte) (rawDataLeftOver []byte) {
 	return rawData[pendingLeft:]
 }
 
-func (b *Builder) Build() (*share.Share, error) {
-	return share.NewShare(b.rawShareData)
+func (b *Builder) Build() (*Share, error) {
+	return NewShare(b.rawShareData)
 }
 
 // IsEmptyShare returns true if no data has been written to the share
@@ -101,7 +100,7 @@ func (b *Builder) ZeroPadIfNecessary() (bytesOfPadding int) {
 // isEmptyReservedBytes returns true if the reserved bytes are empty.
 func (b *Builder) isEmptyReservedBytes() (bool, error) {
 	indexOfReservedBytes := b.indexOfReservedBytes()
-	reservedBytes, err := share.ParseReservedBytes(b.rawShareData[indexOfReservedBytes : indexOfReservedBytes+appconsts.CompactShareReservedBytes])
+	reservedBytes, err := ParseReservedBytes(b.rawShareData[indexOfReservedBytes : indexOfReservedBytes+appconsts.CompactShareReservedBytes])
 	if err != nil {
 		return false, err
 	}
@@ -141,7 +140,7 @@ func (b *Builder) MaybeWriteReservedBytes() error {
 	}
 
 	byteIndexOfNextUnit := len(b.rawShareData)
-	reservedBytes, err := share.NewReservedBytes(uint32(byteIndexOfNextUnit))
+	reservedBytes, err := NewReservedBytes(uint32(byteIndexOfNextUnit))
 	if err != nil {
 		return err
 	}
@@ -183,7 +182,7 @@ func (b *Builder) FlipSequenceStart() {
 
 func (b *Builder) prepareCompactShare() error {
 	shareData := make([]byte, 0, appconsts.ShareSize)
-	infoByte, err := share.NewInfoByte(b.shareVersion, b.isFirstShare)
+	infoByte, err := NewInfoByte(b.shareVersion, b.isFirstShare)
 	if err != nil {
 		return err
 	}
@@ -206,7 +205,7 @@ func (b *Builder) prepareCompactShare() error {
 
 func (b *Builder) prepareSparseShare() error {
 	shareData := make([]byte, 0, appconsts.ShareSize)
-	infoByte, err := share.NewInfoByte(b.shareVersion, b.isFirstShare)
+	infoByte, err := NewInfoByte(b.shareVersion, b.isFirstShare)
 	if err != nil {
 		return err
 	}

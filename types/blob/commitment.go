@@ -25,7 +25,7 @@ func CreateCommitment(blob *Blob) ([]byte, error) {
 	// determined by the number of roots required to create a share commitment
 	// over that blob. The size of the tree is only increased if the number of
 	// subtree roots surpasses a constant threshold.
-	subTreeWidth := SubTreeWidth(len(shares), appconsts.DefaultSubtreeRootThreshold)
+	subTreeWidth := share.SubTreeWidth(len(shares), appconsts.DefaultSubtreeRootThreshold)
 	treeSizes, err := merkleMountainRangeSizes(uint64(len(shares)), uint64(subTreeWidth))
 	if err != nil {
 		return nil, err
@@ -97,7 +97,7 @@ func merkleMountainRangeSizes(totalSize, maxTreeSize uint64) ([]uint64, error) {
 			treeSizes = append(treeSizes, maxTreeSize)
 			totalSize = totalSize - maxTreeSize
 		case totalSize < maxTreeSize:
-			treeSize, err := RoundDownPowerOfTwo(totalSize)
+			treeSize, err := share.RoundDownPowerOfTwo(totalSize)
 			if err != nil {
 				return treeSizes, err
 			}
