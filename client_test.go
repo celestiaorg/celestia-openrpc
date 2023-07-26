@@ -119,7 +119,7 @@ func (t *TestSuite) TestRoundTrip() {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
-  nsBytes := []byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	nsBytes := []byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 	nsNamespace := namespace.MustNewV0(nsBytes)
 	t.Require().NotEmpty(nsNamespace)
 

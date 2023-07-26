@@ -80,10 +80,10 @@ func (p *Proof) UnmarshalJSON(data []byte) error {
 }
 
 type jsonBlob struct {
-	Namespace    []byte `json:"namespace"`
-	Data         []byte          `json:"data"`
-	ShareVersion uint32          `json:"share_version"`
-	Commitment   Commitment      `json:"commitment"`
+	Namespace    []byte     `json:"namespace"`
+	Data         []byte     `json:"data"`
+	ShareVersion uint32     `json:"share_version"`
+	Commitment   Commitment `json:"commitment"`
 }
 
 // Blob represents any application-specific binary data that anyone can submit to Celestia.
@@ -97,10 +97,10 @@ type Blob struct {
 }
 
 func (b *Blob) MarshalJSON() ([]byte, error) {
-  nsNamespace, err := namespace.From(b.Namespace)
-  if err != nil {
-    return nil, err
-  }
+	nsNamespace, err := namespace.From(b.Namespace)
+	if err != nil {
+		return nil, err
+	}
 	blob := &jsonBlob{
 		Namespace:    nsNamespace.Bytes(),
 		Data:         b.Data,
@@ -117,10 +117,10 @@ func (b *Blob) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-  nsNamespace, err := namespace.From(blob.Namespace)
-  if err != nil {
-    return err
-  }
+	nsNamespace, err := namespace.From(blob.Namespace)
+	if err != nil {
+		return err
+	}
 	b.NamespaceVersion = uint32(nsNamespace.Version)
 	b.Data = blob.Data
 	b.ShareVersion = blob.ShareVersion
@@ -128,6 +128,7 @@ func (b *Blob) UnmarshalJSON(data []byte) error {
 	b.Namespace = blob.Namespace
 	return nil
 }
+
 // NewBlobV0 constructs a new blob from the provided Namespace and data.
 // The blob will be formatted as v0 shares.
 func NewBlobV0(namespace namespace.Namespace, data []byte) (*Blob, error) {
