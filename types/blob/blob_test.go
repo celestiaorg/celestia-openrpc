@@ -44,6 +44,9 @@ func TestBlobMarshalUnmarshal(t *testing.T) {
 			require.Equal(t, tt.blob.Namespace, blob.Namespace)
 			require.Equal(t, tt.blob.Data, blob.Data)
 			require.Equal(t, tt.blob.Commitment, blob.Commitment)
+
+			blobJSON, err := blob.MarshalJSON()
+			require.Equal(t, tt.blobJSON, string(blobJSON))
 		})
 	}
 }
