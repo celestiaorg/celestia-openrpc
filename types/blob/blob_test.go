@@ -8,7 +8,6 @@ import (
 
 	"github.com/rollkit/celestia-openrpc/types/appconsts"
 	appns "github.com/rollkit/celestia-openrpc/types/namespace"
-	"github.com/rollkit/celestia-openrpc/types/share"
 )
 
 func TestBlobMarshalUnmarshal(t *testing.T) {
@@ -31,12 +30,8 @@ func TestBlobMarshalUnmarshal(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			namespace, err := share.NewBlobNamespaceV0([]byte{1, 2, 3, 4, 5, 6, 7, 8})
-			require.NoError(t, err)
-			require.NotEmpty(t, namespace)
-
 			blob := &Blob{}
-			err = blob.UnmarshalJSON([]byte(tt.blobJSON))
+			err := blob.UnmarshalJSON([]byte(tt.blobJSON))
 			require.NoError(t, err)
 
 			require.Equal(t, tt.blob.ShareVersion, blob.ShareVersion)
