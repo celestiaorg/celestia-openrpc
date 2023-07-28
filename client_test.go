@@ -12,7 +12,6 @@ import (
 	"testing"
 	"time"
 
-	"cosmossdk.io/math"
 	"github.com/ory/dockertest/v3"
 	"github.com/stretchr/testify/suite"
 
@@ -127,22 +126,21 @@ func (t *TestSuite) TestRoundTrip() {
 	blobBlob, err := blob.NewBlobV0(namespace, data)
 	t.Require().NoError(err)
 
-	// write blob to DA
-	txResponse, err := client.State.SubmitPayForBlob(ctx, math.NewInt(100000000), 200000000, []*blob.Blob{blobBlob})
+	com, err := blob.CreateCommitment(blobBlob)
 	t.Require().NoError(err)
-	t.Require().NotNil(txResponse)
-	t.Zero(txResponse.Code)
-	t.NotZero(txResponse.Height)
+
+	// write blob to DA
+	height, err := client.Blob.Submit(ctx, []*blob.Blob{blobBlob})
+	t.Require().NoError(err)
+	t.Require().NotZero(height)
 
 	ctx, cancel = context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 	// retrieve data back from DA
-	blobs, err := client.Blob.GetAll(ctx, uint64(txResponse.Height), []share.Namespace{namespace})
+	daBlob, err := client.Blob.Get(ctx, height, namespace, com)
 	t.Require().NoError(err)
-	t.Require().NotEmpty(blobs)
-	t.Len(blobs, 1)
-	t.Require().NotNil(blobs[0])
-	t.Equal(data, blobs[0].Data)
+	t.Require().NotNil(daBlob)
+	t.Equal(data, daBlob.Data)
 }
 
 func (t *TestSuite) getRPCAddress() string {

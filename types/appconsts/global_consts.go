@@ -75,4 +75,7 @@ const (
 var (
 	// DefaultCodec is the default codec creator used for data erasure.
 	DefaultCodec = rsmt2d.NewLeoRSCodec
+
+	// SupportedShareVersions is a list of supported share versions.
+	SupportedShareVersions = []uint8{ShareVersionZero}
 )
