@@ -79,13 +79,45 @@ func (p *Proof) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+type jsonBlob struct {
+	Namespace    share.Namespace `json:"namespace"`
+	Data         []byte          `json:"data"`
+	ShareVersion uint32          `json:"share_version"`
+	Commitment   Commitment      `json:"commitment"`
+}
+
 // Blob represents any application-specific binary data that anyone can submit to Celestia.
 type Blob struct {
+	// NOTE: Namespace _must_ include both version and id bytes
 	Namespace        []byte `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	Data             []byte `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
 	ShareVersion     uint32 `protobuf:"varint,3,opt,name=share_version,json=shareVersion,proto3" json:"share_version,omitempty"`
 	NamespaceVersion uint32 `protobuf:"varint,4,opt,name=namespace_version,json=namespaceVersion,proto3" json:"namespace_version,omitempty"`
 	Commitment       []byte `protobuf:"bytes,5,opt,name=commitment,proto3" json:"commitment,omitempty"`
+}
+
+func (b *Blob) MarshalJSON() ([]byte, error) {
+	blob := &jsonBlob{
+		Namespace:    b.Namespace,
+		Data:         b.Data,
+		ShareVersion: b.ShareVersion,
+		Commitment:   b.Commitment,
+	}
+	return json.Marshal(blob)
+}
+
+func (b *Blob) UnmarshalJSON(data []byte) error {
+	var blob jsonBlob
+	err := json.Unmarshal(data, &blob)
+	if err != nil {
+		return err
+	}
+	b.NamespaceVersion = uint32(blob.Namespace.Version())
+	b.Data = blob.Data
+	b.ShareVersion = blob.ShareVersion
+	b.Commitment = blob.Commitment
+	b.Namespace = blob.Namespace
+	return nil
 }
 
 // NewBlobV0 constructs a new blob from the provided Namespace and data.
@@ -110,36 +142,4 @@ func NewBlob(shareVersion uint8, namespace share.Namespace, data []byte) (*Blob,
 		NamespaceVersion: 0,
 		Commitment:       []byte{},
 	}, nil
-}
-
-type jsonBlob struct {
-	Namespace    share.Namespace `json:"namespace"`
-	Data         []byte          `json:"data"`
-	ShareVersion uint32          `json:"share_version"`
-	Commitment   Commitment      `json:"commitment"`
-}
-
-func (b *Blob) MarshalJSON() ([]byte, error) {
-	blob := &jsonBlob{
-		Namespace:    b.Namespace,
-		Data:         b.Data,
-		ShareVersion: b.ShareVersion,
-		Commitment:   b.Commitment,
-	}
-	return json.Marshal(blob)
-}
-
-func (b *Blob) UnmarshalJSON(data []byte) error {
-	var blob jsonBlob
-	err := json.Unmarshal(data, &blob)
-	if err != nil {
-		return err
-	}
-
-	b.NamespaceVersion = uint32(blob.Namespace.Version())
-	b.Data = blob.Data
-	b.ShareVersion = blob.ShareVersion
-	b.Commitment = blob.Commitment
-	b.Namespace = blob.Namespace
-	return nil
 }
