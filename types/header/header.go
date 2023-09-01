@@ -2,7 +2,9 @@ package header
 
 import (
 	"encoding/json"
+	"time"
 
+	"github.com/celestiaorg/go-header"
 	cmjson "github.com/cometbft/cometbft/libs/json"
 
 	"github.com/rollkit/celestia-openrpc/types/core"
@@ -76,3 +78,47 @@ func (eh *ExtendedHeader) UnmarshalJSON(data []byte) error {
 }
 
 type DataAvailabilityHeader = core.DataAvailabilityHeader
+
+func (eh *ExtendedHeader) New() *ExtendedHeader {
+	return new(ExtendedHeader)
+}
+
+func (eh *ExtendedHeader) IsZero() bool {
+	return eh == nil
+}
+
+func (eh *ExtendedHeader) ChainID() string {
+	return eh.RawHeader.ChainID
+}
+
+func (eh *ExtendedHeader) Hash() header.Hash {
+	return eh.Commit.BlockID.Hash.Bytes()
+}
+
+func (eh *ExtendedHeader) Height() uint64 {
+	return uint64(eh.Commit.Height)
+}
+
+func (eh *ExtendedHeader) LastHeader() header.Hash {
+	return eh.RawHeader.LastBlockID.Hash.Bytes()
+}
+
+func (eh *ExtendedHeader) Time() time.Time {
+	return eh.RawHeader.Time
+}
+
+func (eh *ExtendedHeader) Verify(h *ExtendedHeader) error {
+	panic("implement me if being used")
+}
+
+func (eh *ExtendedHeader) Validate() error {
+	panic("implement me if being used")
+}
+
+func (eh *ExtendedHeader) MarshalBinary() (data []byte, err error) {
+	panic("implement me if being used")
+}
+
+func (eh *ExtendedHeader) UnmarshalBinary(data []byte) error {
+	panic("implement me if being used")
+}
