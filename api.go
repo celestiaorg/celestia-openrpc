@@ -29,7 +29,7 @@ type FraudAPI struct {
 
 // Proof embeds the fraud.Proof interface type to provide a concrete type for JSON serialization.
 type Proof struct {
-	fraud.Proof
+	fraud.Proof[*header.ExtendedHeader]
 }
 type DASAPI struct {
 	SamplingStats func(ctx context.Context) (das.SamplingStats, error) `perm:"read"`
