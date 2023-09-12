@@ -18,8 +18,8 @@ type Root = core.DataAvailabilityHeader
 
 // NamespacedRow represents all shares with proofs within a specific namespace of a single EDS row.
 type NamespacedRow struct {
-	Shares []Share
-	Proof  *nmt.Proof
+	Shares []Share    `json:"shares"`
+	Proof  *nmt.Proof `json:"proof"`
 }
 
 // NamespacedShares represents all shares with proofs within a specific namespace of an EDS.
