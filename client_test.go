@@ -42,7 +42,7 @@ func (t *TestSuite) SetupSuite() {
 	}
 
 	// pulls an image, creates a container based on it and runs it
-	resource, err := pool.Run("ghcr.io/rollkit/local-celestia-devnet", "c0b729d", []string{})
+	resource, err := pool.Run("ghcr.io/rollkit/local-celestia-devnet", "4ecd750", []string{})
 	if err != nil {
 		t.Failf("Could not start resource", "error: %v\n", err)
 	}
@@ -72,7 +72,7 @@ func (t *TestSuite) SetupSuite() {
 	buf := new(bytes.Buffer)
 	opts.StdOut = buf
 	opts.StdErr = buf
-	_, err = resource.Exec([]string{"/bin/celestia", "bridge", "auth", "admin", "--node.store", "/bridge"}, opts)
+	_, err = resource.Exec([]string{"/bin/celestia", "bridge", "auth", "admin", "--node.store", "/home/celestia/bridge"}, opts)
 	if err != nil {
 		t.Failf("Could not execute command", "error: %v\n", err)
 	}
@@ -130,7 +130,7 @@ func (t *TestSuite) TestRoundTrip() {
 	t.Require().NoError(err)
 
 	// write blob to DA
-	height, err := client.Blob.Submit(ctx, []*blob.Blob{blobBlob})
+	height, err := client.Blob.Submit(ctx, []*blob.Blob{blobBlob}, nil)
 	t.Require().NoError(err)
 	t.Require().NotZero(height)
 
