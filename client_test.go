@@ -130,7 +130,7 @@ func (t *TestSuite) TestRoundTrip() {
 	t.Require().NoError(err)
 
 	// write blob to DA
-	height, err := client.Blob.Submit(ctx, []*blob.Blob{blobBlob})
+	height, err := client.Blob.Submit(ctx, []*blob.Blob{blobBlob}, DefaultSubmitOptions())
 	t.Require().NoError(err)
 	t.Require().NotZero(height)
 
