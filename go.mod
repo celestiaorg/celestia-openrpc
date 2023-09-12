@@ -7,7 +7,7 @@ require (
 	github.com/celestiaorg/go-fraud v0.2.0
 	github.com/celestiaorg/go-header v0.3.1
 	github.com/celestiaorg/nmt v0.18.1
-	github.com/celestiaorg/rsmt2d v0.10.0
+	github.com/celestiaorg/rsmt2d v0.11.0
 	github.com/cometbft/cometbft v0.37.2
 	github.com/filecoin-project/go-jsonrpc v0.3.1
 	github.com/gogo/protobuf v1.3.2
@@ -53,7 +53,7 @@ require (
 	github.com/ipfs/go-log/v2 v2.5.1 // indirect
 	github.com/jbenet/goprocess v0.1.4 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
-	github.com/klauspost/reedsolomon v1.11.1 // indirect
+	github.com/klauspost/reedsolomon v1.11.8 // indirect
 	github.com/libp2p/go-buffer-pool v0.1.0 // indirect
 	github.com/libp2p/go-flow-metrics v0.1.0 // indirect
 	github.com/libp2p/go-libp2p-pubsub v0.9.3 // indirect
