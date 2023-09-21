@@ -43,42 +43,6 @@ type Proof []*nmt.Proof
 
 func (p Proof) Len() int { return len(p) }
 
-type jsonProof struct {
-	Start int      `json:"start"`
-	End   int      `json:"end"`
-	Nodes [][]byte `json:"nodes"`
-}
-
-func (p *Proof) MarshalJSON() ([]byte, error) {
-	proofs := make([]jsonProof, 0, p.Len())
-	for _, pp := range *p {
-		proofs = append(proofs, jsonProof{
-			Start: pp.Start(),
-			End:   pp.End(),
-			Nodes: pp.Nodes(),
-		})
-	}
-
-	return json.Marshal(proofs)
-}
-
-func (p *Proof) UnmarshalJSON(data []byte) error {
-	var proofs []jsonProof
-	err := json.Unmarshal(data, &proofs)
-	if err != nil {
-		return err
-	}
-
-	nmtProofs := make([]*nmt.Proof, len(proofs))
-	for i, jProof := range proofs {
-		nmtProof := nmt.NewInclusionProof(jProof.Start, jProof.End, jProof.Nodes, NMTIgnoreMaxNamespace)
-		nmtProofs[i] = &nmtProof
-	}
-
-	*p = nmtProofs
-	return nil
-}
-
 type jsonBlob struct {
 	Namespace    share.Namespace `json:"namespace"`
 	Data         []byte          `json:"data"`
