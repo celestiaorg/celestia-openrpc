@@ -101,8 +101,9 @@ func (t *TestSuite) TestClient() {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 
-	resp := client.Share.ProbabilityOfAvailability(ctx)
+	resp, err := client.Header.NetworkHead(ctx)
 	t.NotZero(resp)
+	t.NoError(err)
 
 	info, err := client.Node.Info(ctx)
 	t.NoError(err)

@@ -22,15 +22,16 @@ import (
 	"github.com/rollkit/celestia-openrpc/types/state"
 )
 
-type FraudAPI struct {
-	Subscribe func(context.Context, fraud.ProofType) (<-chan Proof, error) `perm:"public"`
-	Get       func(context.Context, fraud.ProofType) ([]Proof, error)      `perm:"public"`
-}
-
 // Proof embeds the fraud.Proof interface type to provide a concrete type for JSON serialization.
 type Proof struct {
 	fraud.Proof[*header.ExtendedHeader]
 }
+
+type FraudAPI struct {
+	Subscribe func(context.Context, fraud.ProofType) (<-chan *Proof, error) `perm:"read"`
+	Get       func(context.Context, fraud.ProofType) ([]Proof, error)       `perm:"read"`
+}
+
 type DASAPI struct {
 	SamplingStats func(ctx context.Context) (das.SamplingStats, error) `perm:"read"`
 	WaitCatchUp   func(ctx context.Context) error                      `perm:"read"`
@@ -49,23 +50,23 @@ type HeaderAPI struct {
 	GetByHash func(
 		ctx context.Context,
 		hash libhead.Hash,
-	) (*header.ExtendedHeader, error) `perm:"public"`
+	) (*header.ExtendedHeader, error) `perm:"read"`
 	GetVerifiedRangeByHeight func(
 		context.Context,
 		*header.ExtendedHeader,
 		uint64,
-	) ([]*header.ExtendedHeader, error) `perm:"public"`
-	GetByHeight func(context.Context, uint64) (*header.ExtendedHeader, error)    `perm:"public"`
+	) ([]*header.ExtendedHeader, error) `perm:"read"`
+	GetByHeight func(context.Context, uint64) (*header.ExtendedHeader, error)    `perm:"read"`
 	SyncState   func(ctx context.Context) (sync.State, error)                    `perm:"read"`
 	SyncWait    func(ctx context.Context) error                                  `perm:"read"`
-	NetworkHead func(ctx context.Context) (*header.ExtendedHeader, error)        `perm:"public"`
-	Subscribe   func(ctx context.Context) (<-chan *header.ExtendedHeader, error) `perm:"public"`
+	NetworkHead func(ctx context.Context) (*header.ExtendedHeader, error)        `perm:"read"`
+	Subscribe   func(ctx context.Context) (<-chan *header.ExtendedHeader, error) `perm:"read"`
 }
 type StateAPI struct {
 	AccountAddress    func(ctx context.Context) (state.Address, error)                      `perm:"read"`
-	IsStopped         func(ctx context.Context) bool                                        `perm:"public"`
+	IsStopped         func(ctx context.Context) bool                                        `perm:"read"`
 	Balance           func(ctx context.Context) (*state.Balance, error)                     `perm:"read"`
-	BalanceForAddress func(ctx context.Context, addr state.Address) (*state.Balance, error) `perm:"public"`
+	BalanceForAddress func(ctx context.Context, addr state.Address) (*state.Balance, error) `perm:"read"`
 	Transfer          func(
 		ctx context.Context,
 		to state.AccAddress,
@@ -113,34 +114,33 @@ type StateAPI struct {
 	QueryDelegation func(
 		ctx context.Context,
 		valAddr state.ValAddress,
-	) (*state.QueryDelegationResponse, error) `perm:"public"`
+	) (*state.QueryDelegationResponse, error) `perm:"read"`
 	QueryUnbonding func(
 		ctx context.Context,
 		valAddr state.ValAddress,
-	) (*state.QueryUnbondingDelegationResponse, error) `perm:"public"`
+	) (*state.QueryUnbondingDelegationResponse, error) `perm:"read"`
 	QueryRedelegations func(
 		ctx context.Context,
 		srcValAddr,
 		dstValAddr state.ValAddress,
-	) (*state.QueryRedelegationsResponse, error) `perm:"public"`
+	) (*state.QueryRedelegationsResponse, error) `perm:"read"`
 }
 type ShareAPI struct {
-	SharesAvailable           func(context.Context, *share.Root) error `perm:"public"`
-	ProbabilityOfAvailability func(context.Context) float64            `perm:"public"`
-	GetShare                  func(
+	SharesAvailable func(context.Context, *header.ExtendedHeader) error `perm:"read"`
+	GetShare        func(
 		ctx context.Context,
-		dah *share.Root,
+		eh *header.ExtendedHeader,
 		row, col int,
-	) (share.Share, error) `perm:"public"`
+	) (share.Share, error) `perm:"read"`
 	GetEDS func(
 		ctx context.Context,
-		root *share.Root,
-	) (*rsmt2d.ExtendedDataSquare, error) `perm:"public"`
+		eh *header.ExtendedHeader,
+	) (*rsmt2d.ExtendedDataSquare, error) `perm:"read"`
 	GetSharesByNamespace func(
 		ctx context.Context,
-		root *share.Root,
+		eh *header.ExtendedHeader,
 		namespace share.Namespace,
-	) (share.NamespacedShares, error) `perm:"public"`
+	) (share.NamespacedShares, error) `perm:"read"`
 }
 type P2PAPI struct {
 	Peers                func(context.Context) ([]peer.ID, error)                             `perm:"admin"`
