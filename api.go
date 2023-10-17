@@ -51,7 +51,7 @@ type HeaderAPI struct {
 		ctx context.Context,
 		hash libhead.Hash,
 	) (*header.ExtendedHeader, error) `perm:"read"`
-	GetVerifiedRangeByHeight func(
+	GetRangeByHeight func(
 		context.Context,
 		*header.ExtendedHeader,
 		uint64,
