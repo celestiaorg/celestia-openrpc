@@ -36,11 +36,13 @@ jobs:
         run: echo "go-version=${{env.GO_VERSION}}" >> "$GITHUB_OUTPUT"
 
   lint:
+    needs: [setup]
     uses: ./.github/workflows/lint.yml
     with:
       go-version: ${{ needs.setup.outputs.go-version }}
 
   test:
+    needs: [setup]
     uses: ./.github/workflows/test.yml
     with:
       go-version: ${{ needs.setup.outputs.go-version }}
