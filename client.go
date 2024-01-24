@@ -6,19 +6,27 @@ import (
 	"net/http"
 
 	"github.com/filecoin-project/go-jsonrpc"
+	"github.com/rollkit/celestia-openrpc/types/blob"
+	"github.com/rollkit/celestia-openrpc/types/das"
+	"github.com/rollkit/celestia-openrpc/types/fraud"
+	"github.com/rollkit/celestia-openrpc/types/header"
+	"github.com/rollkit/celestia-openrpc/types/node"
+	"github.com/rollkit/celestia-openrpc/types/p2p"
+	"github.com/rollkit/celestia-openrpc/types/share"
+	"github.com/rollkit/celestia-openrpc/types/state"
 )
 
 const AuthKey = "Authorization"
 
 type Client struct {
-	Fraud  FraudAPI
-	Blob   BlobAPI
-	Header HeaderAPI
-	State  StateAPI
-	Share  ShareAPI
-	DAS    DASAPI
-	P2P    P2PAPI
-	Node   NodeAPI
+	Fraud  fraud.API
+	Blob   blob.API
+	Header header.API
+	State  state.API
+	Share  share.API
+	DAS    das.API
+	P2P    p2p.API
+	Node   node.API
 
 	closer multiClientCloser
 }
