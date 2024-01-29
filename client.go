@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/filecoin-project/go-jsonrpc"
+	clientbuilder "github.com/rollkit/celestia-openrpc/builder"
 	"github.com/rollkit/celestia-openrpc/types/blob"
 	"github.com/rollkit/celestia-openrpc/types/das"
 	"github.com/rollkit/celestia-openrpc/types/fraud"
@@ -28,29 +29,12 @@ type Client struct {
 	P2P    p2p.API
 	Node   node.API
 
-	closer multiClientCloser
-}
-
-// multiClientCloser is a wrapper struct to close clients across multiple namespaces.
-type multiClientCloser struct {
-	closers []jsonrpc.ClientCloser
-}
-
-// register adds a new closer to the multiClientCloser
-func (m *multiClientCloser) register(closer jsonrpc.ClientCloser) {
-	m.closers = append(m.closers, closer)
-}
-
-// closeAll closes all saved clients.
-func (m *multiClientCloser) closeAll() {
-	for _, closer := range m.closers {
-		closer()
-	}
+	closer clientbuilder.MultiClientCloser
 }
 
 // Close closes the connections to all namespaces registered on the client.
 func (c *Client) Close() {
-	c.closer.closeAll()
+	c.closer.CloseAll()
 }
 
 func NewClient(ctx context.Context, addr string, token string) (*Client, error) {
@@ -77,7 +61,7 @@ func NewClient(ctx context.Context, addr string, token string) (*Client, error) 
 		if err != nil {
 			return nil, err
 		}
-		client.closer.register(closer)
+		client.closer.Register(closer)
 	}
 
 	return &client, nil
