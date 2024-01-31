@@ -8,6 +8,7 @@ import (
 	"github.com/filecoin-project/go-jsonrpc"
 	clientbuilder "github.com/rollkit/celestia-openrpc/builder"
 	"github.com/rollkit/celestia-openrpc/types/blob"
+	"github.com/rollkit/celestia-openrpc/types/da"
 	"github.com/rollkit/celestia-openrpc/types/das"
 	"github.com/rollkit/celestia-openrpc/types/fraud"
 	"github.com/rollkit/celestia-openrpc/types/header"
@@ -28,6 +29,7 @@ type Client struct {
 	DAS    das.API
 	P2P    p2p.API
 	Node   node.API
+	DA     da.API
 
 	closer clientbuilder.MultiClientCloser
 }
@@ -54,6 +56,7 @@ func NewClient(ctx context.Context, addr string, token string) (*Client, error) 
 		"das":    &client.DAS,
 		"p2p":    &client.P2P,
 		"node":   &client.Node,
+		"da":     &client.DA,
 	}
 
 	for name, module := range modules {
