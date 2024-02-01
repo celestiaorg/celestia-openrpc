@@ -15,8 +15,8 @@ import (
 	"github.com/ory/dockertest/v3"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/rollkit/celestia-openrpc/types/blob"
-	"github.com/rollkit/celestia-openrpc/types/share"
+	"github.com/celestiaorg/celestia-openrpc/types/blob"
+	"github.com/celestiaorg/celestia-openrpc/types/share"
 )
 
 type TestSuite struct {
@@ -131,7 +131,7 @@ func (t *TestSuite) TestRoundTrip() {
 	t.Require().NoError(err)
 
 	// write blob to DA
-	height, err := client.Blob.Submit(ctx, []*blob.Blob{blobBlob}, nil)
+	height, err := client.Blob.Submit(ctx, []*blob.Blob{blobBlob}, -1)
 	t.Require().NoError(err)
 	t.Require().NotZero(height)
 
