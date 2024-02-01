@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/rollkit/celestia-openrpc/types/appconsts"
-	appns "github.com/rollkit/celestia-openrpc/types/namespace"
+	"github.com/celestiaorg/celestia-openrpc/types/appconsts"
+	appns "github.com/celestiaorg/celestia-openrpc/types/namespace"
 )
 
 func TestBlobMarshalUnmarshal(t *testing.T) {

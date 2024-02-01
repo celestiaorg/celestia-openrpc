@@ -15,8 +15,8 @@ import (
 	"github.com/ory/dockertest/v3"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/rollkit/celestia-openrpc/types/blob"
-	"github.com/rollkit/celestia-openrpc/types/share"
+	"github.com/celestiaorg/celestia-openrpc/types/blob"
+	"github.com/celestiaorg/celestia-openrpc/types/share"
 )
 
 type TestSuite struct {

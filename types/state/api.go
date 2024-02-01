@@ -3,7 +3,7 @@ package state
 import (
 	"context"
 
-	"github.com/rollkit/celestia-openrpc/types/blob"
+	"github.com/celestiaorg/celestia-openrpc/types/blob"
 )
 
 type API struct {

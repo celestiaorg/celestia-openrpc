@@ -3,8 +3,8 @@ package share
 import (
 	"context"
 
+	"github.com/celestiaorg/celestia-openrpc/types/header"
 	"github.com/celestiaorg/rsmt2d"
-	"github.com/rollkit/celestia-openrpc/types/header"
 )
 
 type API struct {

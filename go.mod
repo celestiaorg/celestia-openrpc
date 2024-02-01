@@ -1,8 +1,6 @@
-module github.com/rollkit/celestia-openrpc
+module github.com/celestiaorg/celestia-openrpc
 
-go 1.21.1
-
-toolchain go1.21.3
+go 1.21
 
 require (
 	cosmossdk.io/math v1.1.2
@@ -86,7 +84,6 @@ require (
 	github.com/prometheus/common v0.37.0 // indirect
 	github.com/prometheus/procfs v0.8.0 // indirect
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
-	github.com/rollkit/go-da v0.3.0
 	github.com/sasha-s/go-deadlock v0.3.1 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
