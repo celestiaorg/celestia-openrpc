@@ -48,6 +48,7 @@ type jsonBlob struct {
 	Data         []byte          `json:"data"`
 	ShareVersion uint32          `json:"share_version"`
 	Commitment   Commitment      `json:"commitment"`
+	Index        int             `json:"index"`
 }
 
 // Blob represents any application-specific binary data that anyone can submit to Celestia.
@@ -58,6 +59,7 @@ type Blob struct {
 	ShareVersion     uint32 `protobuf:"varint,3,opt,name=share_version,json=shareVersion,proto3" json:"share_version,omitempty"`
 	NamespaceVersion uint32 `protobuf:"varint,4,opt,name=namespace_version,json=namespaceVersion,proto3" json:"namespace_version,omitempty"`
 	Commitment       []byte `protobuf:"bytes,5,opt,name=commitment,proto3" json:"commitment,omitempty"`
+	Index            int    `protobuf:"varint,6,opt,name=index,proto3" json:"index,omitempty"`
 }
 
 func (b *Blob) MarshalJSON() ([]byte, error) {
@@ -66,6 +68,7 @@ func (b *Blob) MarshalJSON() ([]byte, error) {
 		Data:         b.Data,
 		ShareVersion: b.ShareVersion,
 		Commitment:   b.Commitment,
+		Index:        b.Index,
 	}
 	return json.Marshal(blob)
 }
@@ -81,6 +84,7 @@ func (b *Blob) UnmarshalJSON(data []byte) error {
 	b.ShareVersion = blob.ShareVersion
 	b.Commitment = blob.Commitment
 	b.Namespace = blob.Namespace
+	b.Index = blob.Index
 	return nil
 }
 
@@ -105,5 +109,6 @@ func NewBlob(shareVersion uint8, namespace share.Namespace, data []byte) (*Blob,
 		ShareVersion:     uint32(shareVersion),
 		NamespaceVersion: 0,
 		Commitment:       []byte{},
+		Index:            -1,
 	}, nil
 }
