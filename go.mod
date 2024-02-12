@@ -7,7 +7,7 @@ require (
 	github.com/celestiaorg/go-fraud v0.2.0
 	github.com/celestiaorg/go-header v0.4.1
 	github.com/celestiaorg/nmt v0.20.0
-	github.com/celestiaorg/rsmt2d v0.11.0
+	github.com/celestiaorg/rsmt2d v0.12.0
 	github.com/cometbft/cometbft v0.37.2
 	github.com/filecoin-project/go-jsonrpc v0.3.1
 	github.com/gogo/protobuf v1.3.2
@@ -52,8 +52,8 @@ require (
 	github.com/ipfs/go-datastore v0.6.0 // indirect
 	github.com/ipfs/go-log/v2 v2.5.1 // indirect
 	github.com/jbenet/goprocess v0.1.4 // indirect
-	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
-	github.com/klauspost/reedsolomon v1.11.8 // indirect
+	github.com/klauspost/cpuid/v2 v2.2.6 // indirect
+	github.com/klauspost/reedsolomon v1.12.1 // indirect
 	github.com/libp2p/go-buffer-pool v0.1.0 // indirect
 	github.com/libp2p/go-flow-metrics v0.1.0 // indirect
 	github.com/libp2p/go-libp2p-pubsub v0.9.3 // indirect
@@ -96,12 +96,12 @@ require (
 	go.opentelemetry.io/otel/trace v1.16.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.25.0 // indirect
-	golang.org/x/crypto v0.12.0 // indirect
+	golang.org/x/crypto v0.17.0 // indirect
 	golang.org/x/mod v0.12.0 // indirect
 	golang.org/x/net v0.14.0 // indirect
-	golang.org/x/sync v0.3.0 // indirect
-	golang.org/x/sys v0.11.0 // indirect
-	golang.org/x/text v0.12.0 // indirect
+	golang.org/x/sync v0.6.0 // indirect
+	golang.org/x/sys v0.15.0 // indirect
+	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.12.1-0.20230815132531-74c255bcf846 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230815205213-6bfd019c3878 // indirect
