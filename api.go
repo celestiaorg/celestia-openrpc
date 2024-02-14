@@ -38,7 +38,7 @@ type DASAPI struct {
 }
 
 type BlobAPI struct {
-	Submit   func(context.Context, []*blob.Blob, *GasPrice) (uint64, error)                             `perm:"write"`
+	Submit   func(context.Context, []*blob.Blob, GasPrice) (uint64, error)                              `perm:"write"`
 	Get      func(context.Context, uint64, share.Namespace, blob.Commitment) (*blob.Blob, error)        `perm:"read"`
 	GetAll   func(context.Context, uint64, []share.Namespace) ([]*blob.Blob, error)                     `perm:"read"`
 	GetProof func(context.Context, uint64, share.Namespace, blob.Commitment) (*blob.Proof, error)       `perm:"read"`
