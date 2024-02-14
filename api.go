@@ -38,7 +38,7 @@ type DASAPI struct {
 }
 
 type BlobAPI struct {
-	Submit   func(context.Context, []*blob.Blob, *SubmitOptions) (uint64, error)                        `perm:"write"`
+	Submit   func(context.Context, []*blob.Blob, *GasPrice) (uint64, error)                             `perm:"write"`
 	Get      func(context.Context, uint64, share.Namespace, blob.Commitment) (*blob.Blob, error)        `perm:"read"`
 	GetAll   func(context.Context, uint64, []share.Namespace) ([]*blob.Blob, error)                     `perm:"read"`
 	GetProof func(context.Context, uint64, share.Namespace, blob.Commitment) (*blob.Proof, error)       `perm:"read"`
@@ -168,16 +168,12 @@ type NodeAPI struct {
 	AuthNew     func(ctx context.Context, perms []auth.Permission) ([]byte, error) `perm:"admin"`
 }
 
-// SubmitOptions contains the information about fee and gasLimit price in order to configure the Submit request.
-type SubmitOptions struct {
-	Fee      int64
-	GasLimit uint64
-}
+// GasPrice represents the amount to be paid per gas unit. Fee is set by
+// multiplying GasPrice by GasLimit, which is determined by the blob sizes.
+type GasPrice float64
 
-// DefaultSubmitOptions creates a default fee and gas price values.
-func DefaultSubmitOptions() *SubmitOptions {
-	return &SubmitOptions{
-		Fee:      -1,
-		GasLimit: 0,
-	}
+// DefaultGasPrice returns the default gas price, letting node automatically
+// determine the Fee based on the passed blob sizes.
+func DefaultGasPrice() GasPrice {
+	return -1.0
 }
