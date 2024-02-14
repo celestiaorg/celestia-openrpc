@@ -7,7 +7,7 @@ import (
 	"github.com/celestiaorg/go-header"
 	cmjson "github.com/cometbft/cometbft/libs/json"
 
-	"github.com/rollkit/celestia-openrpc/types/core"
+	"github.com/celestia/celestia-openrpc/types/core"
 )
 
 // RawHeader is an alias to core.Header. It is

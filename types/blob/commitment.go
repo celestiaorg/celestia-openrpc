@@ -5,8 +5,8 @@ import (
 
 	"github.com/celestiaorg/nmt"
 
-	"github.com/rollkit/celestia-openrpc/types/appconsts"
-	"github.com/rollkit/celestia-openrpc/types/share"
+	"github.com/celestia/celestia-openrpc/types/appconsts"
+	"github.com/celestia/celestia-openrpc/types/share"
 )
 
 // CreateCommitment generates the share commitment for a given blob.
