@@ -4,8 +4,8 @@ import (
 	"encoding/binary"
 	"errors"
 
-	"github.com/rollkit/celestia-openrpc/types/appconsts"
-	"github.com/rollkit/celestia-openrpc/types/namespace"
+	"github.com/celestia/celestia-openrpc/types/appconsts"
+	"github.com/celestia/celestia-openrpc/types/namespace"
 )
 
 type Builder struct {

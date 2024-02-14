@@ -7,9 +7,9 @@ import (
 
 	"github.com/celestiaorg/nmt"
 
-	"github.com/rollkit/celestia-openrpc/types/appconsts"
-	"github.com/rollkit/celestia-openrpc/types/core"
-	"github.com/rollkit/celestia-openrpc/types/namespace"
+	"github.com/celestia/celestia-openrpc/types/appconsts"
+	"github.com/celestia/celestia-openrpc/types/core"
+	"github.com/celestia/celestia-openrpc/types/namespace"
 )
 
 // Root represents root commitment to multiple Shares.

@@ -7,8 +7,8 @@ import (
 
 	"github.com/celestiaorg/nmt/namespace"
 
-	"github.com/rollkit/celestia-openrpc/types/appconsts"
-	appns "github.com/rollkit/celestia-openrpc/types/namespace"
+	"github.com/celestia/celestia-openrpc/types/appconsts"
+	appns "github.com/celestia/celestia-openrpc/types/namespace"
 )
 
 // Various reserved namespaces.
