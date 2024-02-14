@@ -1,6 +1,6 @@
 package blob
 
-import "github.com/rollkit/celestia-openrpc/types/share"
+import "github.com/celestiaorg/celestia-openrpc/types/share"
 
 // SplitBlobs splits the provided blobs into shares.
 func SplitBlobs(blobs ...Blob) ([]share.Share, error) {

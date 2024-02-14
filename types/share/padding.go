@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"errors"
 
-	"github.com/rollkit/celestia-openrpc/types/appconsts"
-	"github.com/rollkit/celestia-openrpc/types/namespace"
+	"github.com/celestiaorg/celestia-openrpc/types/appconsts"
+	"github.com/celestiaorg/celestia-openrpc/types/namespace"
 )
 
 // NamespacePaddingShare returns a share that acts as padding. Namespace padding

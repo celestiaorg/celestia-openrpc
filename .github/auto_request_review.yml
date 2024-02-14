@@ -6,7 +6,7 @@ reviewers:
       - Nashqueue
       - tzdybal
       - gupadhyaya
-    rollkit:
+    celestia:
       - Manav-Aggarwal
       - S1nus
       - tuxcanfly
@@ -20,7 +20,7 @@ reviewers:
 files:
   '**':
     - code-owners
-    - rollkit
+    - celestia
   '**/*Dockerfile':
     - devops
   '.github/**':

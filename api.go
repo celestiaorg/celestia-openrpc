@@ -14,12 +14,12 @@ import (
 	"github.com/libp2p/go-libp2p/core/protocol"
 	rcmgr "github.com/libp2p/go-libp2p/p2p/host/resource-manager"
 
-	"github.com/rollkit/celestia-openrpc/types/blob"
-	"github.com/rollkit/celestia-openrpc/types/das"
-	"github.com/rollkit/celestia-openrpc/types/header"
-	"github.com/rollkit/celestia-openrpc/types/node"
-	"github.com/rollkit/celestia-openrpc/types/share"
-	"github.com/rollkit/celestia-openrpc/types/state"
+	"github.com/celestiaorg/celestia-openrpc/types/blob"
+	"github.com/celestiaorg/celestia-openrpc/types/das"
+	"github.com/celestiaorg/celestia-openrpc/types/header"
+	"github.com/celestiaorg/celestia-openrpc/types/node"
+	"github.com/celestiaorg/celestia-openrpc/types/share"
+	"github.com/celestiaorg/celestia-openrpc/types/state"
 )
 
 // Proof embeds the fraud.Proof interface type to provide a concrete type for JSON serialization.

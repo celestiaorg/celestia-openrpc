@@ -15,8 +15,8 @@ import (
 	"github.com/ory/dockertest/v3"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/rollkit/celestia-openrpc/types/blob"
-	"github.com/rollkit/celestia-openrpc/types/share"
+	"github.com/celestiaorg/celestia-openrpc/types/blob"
+	"github.com/celestiaorg/celestia-openrpc/types/share"
 )
 
 type TestSuite struct {
@@ -72,7 +72,7 @@ func (t *TestSuite) SetupSuite() {
 	buf := new(bytes.Buffer)
 	opts.StdOut = buf
 	opts.StdErr = buf
-	_, err = resource.Exec([]string{"/bin/celestia", "bridge", "auth", "admin", "--node.store", "/home/celestia/bridge"}, opts)
+	_, err = resource.Exec([]string{"/bin/celestia", "bridge", "auth", "admin", "--node.store", "/home/celestiaorg/bridge"}, opts)
 	if err != nil {
 		t.Failf("Could not execute command", "error: %v\n", err)
 	}
