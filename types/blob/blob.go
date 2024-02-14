@@ -8,8 +8,8 @@ import (
 
 	"github.com/celestiaorg/nmt"
 
-	"github.com/celestia/celestia-openrpc/types/appconsts"
-	"github.com/celestia/celestia-openrpc/types/share"
+	"github.com/celestiaorg/celestia-openrpc/types/appconsts"
+	"github.com/celestiaorg/celestia-openrpc/types/share"
 )
 
 const (

@@ -8,7 +8,7 @@ import (
 
 	coretypes "github.com/cometbft/cometbft/types"
 
-	"github.com/celestia/celestia-openrpc/types/sdk"
+	"github.com/celestiaorg/celestia-openrpc/types/sdk"
 )
 
 // Balance is an alias to the Coin type from Cosmos-SDK.

@@ -1,6 +1,6 @@
 package appconsts
 
-import v1 "github.com/celestia/celestia-openrpc/types/appconsts/v1"
+import v1 "github.com/celestiaorg/celestia-openrpc/types/appconsts/v1"
 
 const (
 	LatestVersion = v1.Version
