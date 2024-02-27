@@ -33,7 +33,7 @@ jobs:
           go-version: ${{ inputs.GO_VERSION }}
       - name: Test & Coverage
         run: make cover
-      - uses: codecov/codecov-action@v3.1.4
+      - uses: codecov/codecov-action@v4.1.0
         with:
           file: ./coverage.txt
 
