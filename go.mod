@@ -13,7 +13,7 @@ require (
 	github.com/gogo/protobuf v1.3.2
 	github.com/libp2p/go-libp2p v0.30.0
 	github.com/ory/dockertest/v3 v3.10.0
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 	golang.org/x/exp v0.0.0-20230817173708-d852ddb80c63
 )
 
