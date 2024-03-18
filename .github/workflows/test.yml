@@ -4,7 +4,7 @@ name: Tests / Code Coverage
 on:
   workflow_call:
     inputs:
-      GO_VERSION:
+      go-version:
         description: 'Go version to use'
         type: string
         required: true
@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
-          go-version: ${{ inputs.GO_VERSION }}
+          go-version: ${{ inputs.go-version }}
       - run: go mod tidy
       - name: check for diff
         run: git diff --exit-code
@@ -30,7 +30,7 @@ jobs:
       - name: set up go
         uses: actions/setup-go@v4
         with:
-          go-version: ${{ inputs.GO_VERSION }}
+          go-version: ${{ inputs.go-version }}
       - name: Test & Coverage
         run: make cover
       - uses: codecov/codecov-action@v3.1.4
@@ -45,7 +45,7 @@ jobs:
       - name: set up go
         uses: actions/setup-go@v4
         with:
-          go-version: ${{ inputs.GO_VERSION }}
+          go-version: ${{ inputs.go-version }}
       - name: execute test run
         run: make test-unit
 
@@ -57,7 +57,7 @@ jobs:
       - name: set up go
         uses: actions/setup-go@v4
         with:
-          go-version: ${{ inputs.GO_VERSION }}
+          go-version: ${{ inputs.go-version }}
       - name: execute test run
         run: make test-unit-race
 
@@ -69,6 +69,6 @@ jobs:
       - name: set up go
         uses: actions/setup-go@v4
         with:
-          go-version: ${{ inputs.GO_VERSION }}
+          go-version: ${{ inputs.go-version }}
       - name: Integration Tests
         run: echo "No integration tests yet"
