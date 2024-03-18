@@ -34,4 +34,4 @@ linters-settings:
       - name: package-comments
         disabled: true
   goimports:
-    local-prefixes: github.com/rollkit
+    local-prefixes: github.com/celestia

@@ -1,4 +1,4 @@
-module github.com/rollkit/celestia-openrpc
+module github.com/celestiaorg/celestia-openrpc
 
 go 1.20
 
