@@ -3,18 +3,18 @@ reviewers:
     - code-owners
   groups:
     code-owners:
-      - Nashqueue
-      - tzdybal
-      - gupadhyaya
+      - Bidon15
+      - Ferret-san
+      - distractedm1nd
+      - YazzyYaz
     celestia:
-      - Manav-Aggarwal
+      - Wondertan
       - S1nus
-      - tuxcanfly
+      - vgonkivs
     devops:
       - smuu
       - sysrex
       - jrmanes
-      - Bidon15
     celestia:
       - team:celestia
 files:
