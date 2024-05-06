@@ -67,6 +67,7 @@ type HeaderAPI struct {
 	NetworkHead   func(ctx context.Context) (*header.ExtendedHeader, error)        `perm:"read"`
 	Subscribe     func(ctx context.Context) (<-chan *header.ExtendedHeader, error) `perm:"read"`
 }
+
 type StateAPI struct {
 	AccountAddress    func(ctx context.Context) (state.Address, error)                      `perm:"read"`
 	IsStopped         func(ctx context.Context) bool                                        `perm:"read"`
@@ -129,7 +130,21 @@ type StateAPI struct {
 		srcValAddr,
 		dstValAddr state.ValAddress,
 	) (*state.QueryRedelegationsResponse, error) `perm:"read"`
+	GrantFee func(
+		ctx context.Context,
+		grantee state.AccAddress,
+		amount,
+		fee state.Int,
+		gasLim uint64,
+	) (*state.TxResponse, error) `perm:"write"`
+	RevokeGrantFee func(
+		ctx context.Context,
+		grantee state.AccAddress,
+		fee state.Int,
+		gasLim uint64,
+	) (*state.TxResponse, error) `perm:"write"`
 }
+
 type ShareAPI struct {
 	SharesAvailable func(context.Context, *header.ExtendedHeader) error `perm:"read"`
 	GetShare        func(
@@ -147,6 +162,7 @@ type ShareAPI struct {
 		namespace share.Namespace,
 	) (share.NamespacedShares, error) `perm:"read"`
 }
+
 type P2PAPI struct {
 	Peers                func(context.Context) ([]peer.ID, error)                             `perm:"admin"`
 	PeerInfo             func(ctx context.Context, id peer.ID) (peer.AddrInfo, error)         `perm:"admin"`
@@ -166,6 +182,7 @@ type P2PAPI struct {
 	ResourceState        func(context.Context) (rcmgr.ResourceManagerStat, error)             `perm:"admin"`
 	PubSubPeers          func(ctx context.Context, topic string) ([]peer.ID, error)           `perm:"admin"`
 }
+
 type NodeAPI struct {
 	Info        func(context.Context) (node.Info, error)                           `perm:"admin"`
 	LogLevelSet func(ctx context.Context, name, level string) error                `perm:"admin"`
