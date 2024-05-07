@@ -2,8 +2,10 @@ package blob
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
+
 	"github.com/celestiaorg/nmt"
 
 	"github.com/celestiaorg/celestia-openrpc/types/appconsts"
@@ -90,4 +92,50 @@ func NewBlob(shareVersion uint8, namespace share.Namespace, data []byte) (*Blob,
 		return nil, err
 	}
 	return &Blob{Blob: blob, Commitment: com, namespace: namespace, index: -1}, nil
+}
+
+// DefaultGasPrice returns the default gas price, letting node automatically
+// determine the Fee based on the passed blob sizes.
+func DefaultGasPrice() float64 {
+	return -1.0
+}
+
+type jsonBlob struct {
+	Namespace    share.Namespace `json:"namespace"`
+	Data         []byte          `json:"data"`
+	ShareVersion uint32          `json:"share_version"`
+	Commitment   Commitment      `json:"commitment"`
+	Index        int             `json:"index"`
+}
+
+func (b *Blob) MarshalJSON() ([]byte, error) {
+	ns, err := share.NamespaceFromBytes(b.Namespace().Bytes())
+	if err != nil {
+		return nil, err
+	}
+	blob := &jsonBlob{
+		Namespace:    ns,
+		Data:         b.Data,
+		ShareVersion: b.ShareVersion,
+		Commitment:   b.Commitment,
+		Index:        b.index,
+	}
+	return json.Marshal(blob)
+}
+
+func (b *Blob) UnmarshalJSON(data []byte) error {
+	var blob jsonBlob
+	err := json.Unmarshal(data, &blob)
+	if err != nil {
+		return err
+	}
+
+	b.Blob.NamespaceVersion = uint32(blob.Namespace.Version())
+	b.Blob.NamespaceId = blob.Namespace.ID()
+	b.Blob.Data = blob.Data
+	b.Blob.ShareVersion = blob.ShareVersion
+	b.Commitment = blob.Commitment
+	b.namespace = blob.Namespace
+	b.index = blob.Index
+	return nil
 }

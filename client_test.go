@@ -127,11 +127,8 @@ func (t *TestSuite) TestRoundTrip() {
 	blobBlob, err := blob.NewBlobV0(namespace, data)
 	t.Require().NoError(err)
 
-	com, err := blob.CreateCommitment(blobBlob)
-	t.Require().NoError(err)
-
 	// write blob to DA
-	height, err := client.Blob.Submit(ctx, []*blob.Blob{blobBlob}, DefaultGasPrice())
+	height, err := client.Blob.Submit(ctx, []*blob.Blob{blobBlob}, blob.DefaultGasPrice())
 	t.Require().NoError(err)
 	t.Require().NotZero(height)
 
@@ -142,7 +139,7 @@ func (t *TestSuite) TestRoundTrip() {
 	t.Require().NoError(err)
 
 	// retrieve data back from DA
-	daBlob, err := client.Blob.Get(ctx, height, namespace, com)
+	daBlob, err := client.Blob.Get(ctx, height, namespace, blobBlob.Commitment)
 	t.Require().NoError(err)
 	t.Require().NotNil(daBlob)
 	t.Equal(data, daBlob.Data)
