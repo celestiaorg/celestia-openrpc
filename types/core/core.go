@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/celestiaorg/rsmt2d"
 	"github.com/cometbft/cometbft/crypto"
 	"github.com/cometbft/cometbft/crypto/merkle"
 	cmbytes "github.com/cometbft/cometbft/libs/bytes"
 	cmversion "github.com/cometbft/cometbft/proto/tendermint/version"
+
+	"github.com/celestiaorg/rsmt2d"
 )
 
 // Header defines the structure of a Tendermint block header.

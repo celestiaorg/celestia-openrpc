@@ -3,16 +3,20 @@ package client
 import (
 	"context"
 
-	"github.com/celestiaorg/go-fraud"
-	libhead "github.com/celestiaorg/go-header"
-	"github.com/celestiaorg/go-header/sync"
-	"github.com/celestiaorg/rsmt2d"
 	"github.com/filecoin-project/go-jsonrpc/auth"
 	"github.com/libp2p/go-libp2p/core/metrics"
 	"github.com/libp2p/go-libp2p/core/network"
 	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/libp2p/go-libp2p/core/protocol"
 	rcmgr "github.com/libp2p/go-libp2p/p2p/host/resource-manager"
+
+	"github.com/celestiaorg/rsmt2d"
+
+	libhead "github.com/celestiaorg/go-header"
+
+	"github.com/celestiaorg/go-fraud"
+
+	"github.com/celestiaorg/go-header/sync"
 
 	"github.com/celestiaorg/celestia-openrpc/types/blob"
 	"github.com/celestiaorg/celestia-openrpc/types/das"
