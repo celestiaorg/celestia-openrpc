@@ -60,11 +60,12 @@ type HeaderAPI struct {
 		*header.ExtendedHeader,
 		uint64,
 	) ([]*header.ExtendedHeader, error) `perm:"read"`
-	GetByHeight func(context.Context, uint64) (*header.ExtendedHeader, error)    `perm:"read"`
-	SyncState   func(ctx context.Context) (sync.State, error)                    `perm:"read"`
-	SyncWait    func(ctx context.Context) error                                  `perm:"read"`
-	NetworkHead func(ctx context.Context) (*header.ExtendedHeader, error)        `perm:"read"`
-	Subscribe   func(ctx context.Context) (<-chan *header.ExtendedHeader, error) `perm:"read"`
+	GetByHeight   func(context.Context, uint64) (*header.ExtendedHeader, error)    `perm:"read"`
+	WaitForHeight func(context.Context, uint64) (*header.ExtendedHeader, error)    `perm:"read"`
+	SyncState     func(ctx context.Context) (sync.State, error)                    `perm:"read"`
+	SyncWait      func(ctx context.Context) error                                  `perm:"read"`
+	NetworkHead   func(ctx context.Context) (*header.ExtendedHeader, error)        `perm:"read"`
+	Subscribe     func(ctx context.Context) (<-chan *header.ExtendedHeader, error) `perm:"read"`
 }
 type StateAPI struct {
 	AccountAddress    func(ctx context.Context) (state.Address, error)                      `perm:"read"`

@@ -137,6 +137,10 @@ func (t *TestSuite) TestRoundTrip() {
 
 	ctx, cancel = context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
+
+	_, err = client.Header.WaitForHeight(context.Background(), height)
+	t.Require().NoError(err)
+
 	// retrieve data back from DA
 	daBlob, err := client.Blob.Get(ctx, height, namespace, com)
 	t.Require().NoError(err)
