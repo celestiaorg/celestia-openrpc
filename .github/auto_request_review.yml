@@ -11,12 +11,11 @@ reviewers:
       - Wondertan
       - S1nus
       - vgonkivs
+      - team:celestia
     devops:
       - smuu
       - sysrex
       - jrmanes
-    celestia:
-      - team:celestia
 files:
   '**':
     - code-owners
