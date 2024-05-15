@@ -18,11 +18,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: celestiaorg/celestia-node
-          # TODO: Before mergin this PR, change the ref to use a version tag. Not possible yet because the test doesn't exist currently.
-          ref: main
+          ref: v0.13.4
       - uses: actions/setup-go@v5
         with:
           go-version: ${{ inputs.GO_VERSION }}
 
       - name: Run Structs Equivalence Test
-        run: cd celestia-node && go test -v -tags=rpcequivalence ./api -run TestStructsEquivalence
+        run: cd celestia-node && go test -v -tags=rpcequivalence ./api -run TestAPIEquivalence
