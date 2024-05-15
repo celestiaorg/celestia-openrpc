@@ -91,6 +91,7 @@ func NewBlob(shareVersion uint8, namespace share.Namespace, data []byte) (*Blob,
 	if err != nil {
 		return nil, err
 	}
+	//nolint:govet
 	return &Blob{Blob: blob, Commitment: com, namespace: namespace, index: -1}, nil
 }
 

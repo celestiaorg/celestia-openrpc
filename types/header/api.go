@@ -2,6 +2,7 @@ package header
 
 import (
 	"context"
+
 	libhead "github.com/celestiaorg/go-header"
 	"github.com/celestiaorg/go-header/sync"
 )
