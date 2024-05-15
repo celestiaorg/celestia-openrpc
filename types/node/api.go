@@ -10,7 +10,7 @@ type API struct {
 	// Info returns administrative information about the node.
 	Info func(context.Context) (Info, error) `perm:"admin"`
 	// Ready returns true once the node's RPC is ready to accept requests.
-	Ready func(context.Context) (bool, error)
+	Ready func(context.Context) (bool, error) `perm:"read"`
 	// LogLevelSet sets the given component log level to the given level.
 	LogLevelSet func(ctx context.Context, name, level string) error `perm:"admin"`
 	// AuthVerify returns the permissions assigned to the given token.
