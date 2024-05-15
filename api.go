@@ -3,16 +3,20 @@ package client
 import (
 	"context"
 
-	"github.com/celestiaorg/go-fraud"
-	libhead "github.com/celestiaorg/go-header"
-	"github.com/celestiaorg/go-header/sync"
-	"github.com/celestiaorg/rsmt2d"
 	"github.com/filecoin-project/go-jsonrpc/auth"
 	"github.com/libp2p/go-libp2p/core/metrics"
 	"github.com/libp2p/go-libp2p/core/network"
 	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/libp2p/go-libp2p/core/protocol"
 	rcmgr "github.com/libp2p/go-libp2p/p2p/host/resource-manager"
+
+	"github.com/celestiaorg/rsmt2d"
+
+	libhead "github.com/celestiaorg/go-header"
+
+	"github.com/celestiaorg/go-fraud"
+
+	"github.com/celestiaorg/go-header/sync"
 
 	"github.com/celestiaorg/celestia-openrpc/types/blob"
 	"github.com/celestiaorg/celestia-openrpc/types/das"
@@ -56,11 +60,12 @@ type HeaderAPI struct {
 		*header.ExtendedHeader,
 		uint64,
 	) ([]*header.ExtendedHeader, error) `perm:"read"`
-	GetByHeight func(context.Context, uint64) (*header.ExtendedHeader, error)    `perm:"read"`
-	SyncState   func(ctx context.Context) (sync.State, error)                    `perm:"read"`
-	SyncWait    func(ctx context.Context) error                                  `perm:"read"`
-	NetworkHead func(ctx context.Context) (*header.ExtendedHeader, error)        `perm:"read"`
-	Subscribe   func(ctx context.Context) (<-chan *header.ExtendedHeader, error) `perm:"read"`
+	GetByHeight   func(context.Context, uint64) (*header.ExtendedHeader, error)    `perm:"read"`
+	WaitForHeight func(context.Context, uint64) (*header.ExtendedHeader, error)    `perm:"read"`
+	SyncState     func(ctx context.Context) (sync.State, error)                    `perm:"read"`
+	SyncWait      func(ctx context.Context) error                                  `perm:"read"`
+	NetworkHead   func(ctx context.Context) (*header.ExtendedHeader, error)        `perm:"read"`
+	Subscribe     func(ctx context.Context) (<-chan *header.ExtendedHeader, error) `perm:"read"`
 }
 type StateAPI struct {
 	AccountAddress    func(ctx context.Context) (state.Address, error)                      `perm:"read"`

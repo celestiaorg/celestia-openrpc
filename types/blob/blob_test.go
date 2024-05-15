@@ -18,7 +18,7 @@ func TestBlobMarshalUnmarshal(t *testing.T) {
 	}{
 		{
 			"valid blob",
-			`{"namespace":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQIDBAUGBwg=","data":"aGVsbG8gd29ybGQ=","share_version":0,"commitment":"I6VBbcCIpcliy0hYTCLdX13m18ImVdABclJupNGueko="}`,
+			`{"namespace":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQIDBAUGBwg=","data":"aGVsbG8gd29ybGQ=","share_version":0,"commitment":"I6VBbcCIpcliy0hYTCLdX13m18ImVdABclJupNGueko=","index":0}`,
 			&Blob{
 				Namespace:        append(bytes.Repeat([]byte{0x00}, 21), []byte{1, 2, 3, 4, 5, 6, 7, 8}...),
 				Data:             []byte("hello world"),
