@@ -6,7 +6,8 @@ reviewers:
       - Bidon15
       - Ferret-san
       - distractedm1nd
-      - YazzyYaz
+      - jcstein
+      - ramin
     celestia:
       - Wondertan
       - S1nus
@@ -28,4 +29,4 @@ options:
   ignore_draft: true
   ignored_keywords:
     - WIP
-  number_of_reviewers: 3
+  number_of_reviewers: 2
