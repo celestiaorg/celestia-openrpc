@@ -3,10 +3,6 @@ package client
 import (
 	"context"
 
-	"github.com/celestiaorg/go-fraud"
-	libhead "github.com/celestiaorg/go-header"
-	"github.com/celestiaorg/go-header/sync"
-	"github.com/celestiaorg/rsmt2d"
 	"github.com/filecoin-project/go-jsonrpc/auth"
 	"github.com/libp2p/go-libp2p/core/metrics"
 	"github.com/libp2p/go-libp2p/core/network"
@@ -14,12 +10,20 @@ import (
 	"github.com/libp2p/go-libp2p/core/protocol"
 	rcmgr "github.com/libp2p/go-libp2p/p2p/host/resource-manager"
 
-	"github.com/rollkit/celestia-openrpc/types/blob"
-	"github.com/rollkit/celestia-openrpc/types/das"
-	"github.com/rollkit/celestia-openrpc/types/header"
-	"github.com/rollkit/celestia-openrpc/types/node"
-	"github.com/rollkit/celestia-openrpc/types/share"
-	"github.com/rollkit/celestia-openrpc/types/state"
+	"github.com/celestiaorg/rsmt2d"
+
+	libhead "github.com/celestiaorg/go-header"
+
+	"github.com/celestiaorg/go-fraud"
+
+	"github.com/celestiaorg/go-header/sync"
+
+	"github.com/celestiaorg/celestia-openrpc/types/blob"
+	"github.com/celestiaorg/celestia-openrpc/types/das"
+	"github.com/celestiaorg/celestia-openrpc/types/header"
+	"github.com/celestiaorg/celestia-openrpc/types/node"
+	"github.com/celestiaorg/celestia-openrpc/types/share"
+	"github.com/celestiaorg/celestia-openrpc/types/state"
 )
 
 // Proof embeds the fraud.Proof interface type to provide a concrete type for JSON serialization.
@@ -38,7 +42,7 @@ type DASAPI struct {
 }
 
 type BlobAPI struct {
-	Submit   func(context.Context, []*blob.Blob, *SubmitOptions) (uint64, error)                        `perm:"write"`
+	Submit   func(context.Context, []*blob.Blob, GasPrice) (uint64, error)                              `perm:"write"`
 	Get      func(context.Context, uint64, share.Namespace, blob.Commitment) (*blob.Blob, error)        `perm:"read"`
 	GetAll   func(context.Context, uint64, []share.Namespace) ([]*blob.Blob, error)                     `perm:"read"`
 	GetProof func(context.Context, uint64, share.Namespace, blob.Commitment) (*blob.Proof, error)       `perm:"read"`
@@ -56,11 +60,12 @@ type HeaderAPI struct {
 		*header.ExtendedHeader,
 		uint64,
 	) ([]*header.ExtendedHeader, error) `perm:"read"`
-	GetByHeight func(context.Context, uint64) (*header.ExtendedHeader, error)    `perm:"read"`
-	SyncState   func(ctx context.Context) (sync.State, error)                    `perm:"read"`
-	SyncWait    func(ctx context.Context) error                                  `perm:"read"`
-	NetworkHead func(ctx context.Context) (*header.ExtendedHeader, error)        `perm:"read"`
-	Subscribe   func(ctx context.Context) (<-chan *header.ExtendedHeader, error) `perm:"read"`
+	GetByHeight   func(context.Context, uint64) (*header.ExtendedHeader, error)    `perm:"read"`
+	WaitForHeight func(context.Context, uint64) (*header.ExtendedHeader, error)    `perm:"read"`
+	SyncState     func(ctx context.Context) (sync.State, error)                    `perm:"read"`
+	SyncWait      func(ctx context.Context) error                                  `perm:"read"`
+	NetworkHead   func(ctx context.Context) (*header.ExtendedHeader, error)        `perm:"read"`
+	Subscribe     func(ctx context.Context) (<-chan *header.ExtendedHeader, error) `perm:"read"`
 }
 type StateAPI struct {
 	AccountAddress    func(ctx context.Context) (state.Address, error)                      `perm:"read"`
@@ -168,16 +173,12 @@ type NodeAPI struct {
 	AuthNew     func(ctx context.Context, perms []auth.Permission) ([]byte, error) `perm:"admin"`
 }
 
-// SubmitOptions contains the information about fee and gasLimit price in order to configure the Submit request.
-type SubmitOptions struct {
-	Fee      int64
-	GasLimit uint64
-}
+// GasPrice represents the amount to be paid per gas unit. Fee is set by
+// multiplying GasPrice by GasLimit, which is determined by the blob sizes.
+type GasPrice float64
 
-// DefaultSubmitOptions creates a default fee and gas price values.
-func DefaultSubmitOptions() *SubmitOptions {
-	return &SubmitOptions{
-		Fee:      -1,
-		GasLimit: 0,
-	}
+// DefaultGasPrice returns the default gas price, letting node automatically
+// determine the Fee based on the passed blob sizes.
+func DefaultGasPrice() GasPrice {
+	return -1.0
 }

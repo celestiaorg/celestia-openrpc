@@ -3,24 +3,23 @@ reviewers:
     - code-owners
   groups:
     code-owners:
-      - Nashqueue
-      - tzdybal
-      - gupadhyaya
-    rollkit:
-      - Manav-Aggarwal
+      - Bidon15
+      - Ferret-san
+      - distractedm1nd
+      - YazzyYaz
+    celestia:
+      - Wondertan
       - S1nus
-      - tuxcanfly
+      - vgonkivs
+      - team:celestia
     devops:
       - smuu
       - sysrex
       - jrmanes
-      - Bidon15
-    celestia:
-      - team:celestia
 files:
   '**':
     - code-owners
-    - rollkit
+    - celestia
   '**/*Dockerfile':
     - devops
   '.github/**':

@@ -15,8 +15,8 @@ import (
 	"github.com/ory/dockertest/v3"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/rollkit/celestia-openrpc/types/blob"
-	"github.com/rollkit/celestia-openrpc/types/share"
+	"github.com/celestiaorg/celestia-openrpc/types/blob"
+	"github.com/celestiaorg/celestia-openrpc/types/share"
 )
 
 type TestSuite struct {
@@ -42,7 +42,7 @@ func (t *TestSuite) SetupSuite() {
 	}
 
 	// pulls an image, creates a container based on it and runs it
-	resource, err := pool.Run("ghcr.io/rollkit/local-celestia-devnet", "4ecd750", []string{})
+	resource, err := pool.Run("ghcr.io/rollkit/local-celestia-devnet", "a7aa7c3", []string{})
 	if err != nil {
 		t.Failf("Could not start resource", "error: %v\n", err)
 	}
@@ -74,10 +74,10 @@ func (t *TestSuite) SetupSuite() {
 	opts.StdErr = buf
 	_, err = resource.Exec([]string{"/bin/celestia", "bridge", "auth", "admin", "--node.store", "/home/celestia/bridge"}, opts)
 	if err != nil {
-		t.Failf("Could not execute command", "error: %v\n", err)
+		t.Failf("Could not get auth token", "error: %v\n", err)
 	}
 
-	t.token = buf.String()
+	t.token = strings.TrimSpace(buf.String())
 }
 
 func (t *TestSuite) TearDownSuite() {
@@ -131,12 +131,16 @@ func (t *TestSuite) TestRoundTrip() {
 	t.Require().NoError(err)
 
 	// write blob to DA
-	height, err := client.Blob.Submit(ctx, []*blob.Blob{blobBlob}, nil)
+	height, err := client.Blob.Submit(ctx, []*blob.Blob{blobBlob}, DefaultGasPrice())
 	t.Require().NoError(err)
 	t.Require().NotZero(height)
 
 	ctx, cancel = context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
+
+	_, err = client.Header.WaitForHeight(context.Background(), height)
+	t.Require().NoError(err)
+
 	// retrieve data back from DA
 	daBlob, err := client.Blob.Get(ctx, height, namespace, com)
 	t.Require().NoError(err)
