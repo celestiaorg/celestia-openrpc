@@ -17,14 +17,15 @@ reviewers:
       - smuu
       - sysrex
       - jrmanes
+    ci:
+      - MSevey
 files:
   '**':
     - code-owners
-    - celestia
   '**/*Dockerfile':
     - devops
   '.github/**':
-    - devops
+    - ci
 options:
   ignore_draft: true
   ignored_keywords:
