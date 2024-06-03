@@ -141,6 +141,6 @@ func (b *Blob) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (b *Blob) GetIndex() int {
+func (b *Blob) Index() int {
 	return b.index
 }
