@@ -62,7 +62,7 @@ type Blob struct {
 
 	// index represents the index of the blob's first share in the EDS.
 	// Only retrieved, on-chain blobs will have the index set. Default is -1.
-	Index int
+	index int
 }
 
 // NewBlobV0 constructs a new blob from the provided Namespace and data.
@@ -92,7 +92,7 @@ func NewBlob(shareVersion uint8, namespace share.Namespace, data []byte) (*Blob,
 		return nil, err
 	}
 	//nolint:govet
-	return &Blob{Blob: blob, Commitment: com, namespace: namespace, Index: -1}, nil
+	return &Blob{Blob: blob, Commitment: com, namespace: namespace, index: -1}, nil
 }
 
 // DefaultGasPrice returns the default gas price, letting node automatically
@@ -119,7 +119,7 @@ func (b *Blob) MarshalJSON() ([]byte, error) {
 		Data:         b.Data,
 		ShareVersion: b.ShareVersion,
 		Commitment:   b.Commitment,
-		Index:        b.Index,
+		Index:        b.index,
 	}
 	return json.Marshal(blob)
 }
@@ -137,6 +137,10 @@ func (b *Blob) UnmarshalJSON(data []byte) error {
 	b.Blob.ShareVersion = blob.ShareVersion
 	b.Commitment = blob.Commitment
 	b.namespace = blob.Namespace
-	b.Index = blob.Index
+	b.index = blob.Index
 	return nil
+}
+
+func (b *Blob) GetIndex() int {
+	return b.index
 }
