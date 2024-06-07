@@ -24,11 +24,10 @@ on:
           - major
 
 jobs:
-  # TODO: Uncomment once test is available in released node.
-  #api-equivalence:
-    #uses: ./github/workflows/test-equivalence.yml
-    #with:
-      #GO_VERSION: "1.22"
+  api-equivalence:
+    uses: ./github/workflows/test-equivalence.yml
+    with:
+      GO_VERSION: "1.22"
 
   lint:
     uses: ./.github/workflows/lint.yml
