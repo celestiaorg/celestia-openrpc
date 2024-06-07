@@ -10,7 +10,7 @@ on:
         required: true
 
 jobs:
-  test-equivalence:
+  api-equivalence:
     name: Test API Equivalence
     runs-on: ubuntu-latest
 
