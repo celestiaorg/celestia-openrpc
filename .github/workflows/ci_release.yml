@@ -25,7 +25,7 @@ on:
 
 jobs:
   api-equivalence:
-    uses: ./github/workflows/test-equivalence.yml
+    uses: ./.github/workflows/test-equivalence.yml
     with:
       GO_VERSION: "1.22"
 
