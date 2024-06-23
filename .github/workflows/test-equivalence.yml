@@ -10,18 +10,17 @@ on:
         required: true
 
 jobs:
-  test-equivalence:
+  api-equivalence:
     name: Test API Equivalence
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: celestiaorg/celestia-node
-          ref: v0.13.4
+          repository: celestiaorg/node-api-conformance-test
       - uses: actions/setup-go@v5
         with:
           go-version: ${{ inputs.GO_VERSION }}
 
       - name: Run Structs Equivalence Test
-        run: cd celestia-node && go test -v -tags=conformance ./api -run TestAPIEquivalence
+        run: go test
