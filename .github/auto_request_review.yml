@@ -3,30 +3,31 @@ reviewers:
     - code-owners
   groups:
     code-owners:
-      - Nashqueue
-      - tzdybal
-      - gupadhyaya
-    rollkit:
-      - Manav-Aggarwal
+      - Bidon15
+      - Ferret-san
+      - distractedm1nd
+      - jcstein
+      - ramin
+    celestia:
+      - Wondertan
       - S1nus
-      - tuxcanfly
+      - vgonkivs
+      - team:celestia
     devops:
       - smuu
       - sysrex
       - jrmanes
-      - Bidon15
-    celestia:
-      - team:celestia
+    ci:
+      - MSevey
 files:
   '**':
     - code-owners
-    - rollkit
   '**/*Dockerfile':
     - devops
   '.github/**':
-    - devops
+    - ci
 options:
   ignore_draft: true
   ignored_keywords:
     - WIP
-  number_of_reviewers: 3
+  number_of_reviewers: 2

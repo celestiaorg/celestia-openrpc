@@ -6,8 +6,8 @@ import (
 
 	"golang.org/x/exp/slices"
 
-	"github.com/rollkit/celestia-openrpc/types/appconsts"
-	"github.com/rollkit/celestia-openrpc/types/namespace"
+	"github.com/celestiaorg/celestia-openrpc/types/appconsts"
+	"github.com/celestiaorg/celestia-openrpc/types/namespace"
 )
 
 // SparseShareSplitter lazily splits blobs into shares that will eventually be

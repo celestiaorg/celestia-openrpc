@@ -1,0 +1,26 @@
+# api-equivalence workflow ensures that the API structs between the two repositories are consistent
+# This workflow is triggered by ci_release.yml workflow
+name: api-equivalence
+on:
+  workflow_call:
+    inputs:
+      GO_VERSION:
+        description: "Go version to use"
+        type: string
+        required: true
+
+jobs:
+  api-equivalence:
+    name: Test API Equivalence
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: celestiaorg/node-api-conformance-test
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ inputs.GO_VERSION }}
+
+      - name: Run Structs Equivalence Test
+        run: go test
