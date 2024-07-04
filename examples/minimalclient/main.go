@@ -1,39 +1,50 @@
-# celestia-openrpc
+package main
 
-`celestia-openrpc` is a golang client for [celestia-node RPC](https://docs.celestia.org/developers/node-api/), without depenencies on celestia-node/celestia-app/cosmos-sdk.
-
-This client library is useful for environments where dependencies on celestia-node/celestia-app/cosmos-sdk are not possible or desired.
-
-## Examples
-
-For a full tutorial on how to use this library, visit the official [guide](https://docs.celestia.org/developers/golang-client-tutorial).
-
-For more examples, see the [examples](./examples) directory.
-
-### Create a new client and submit and fetch a blob
-
-```go
 import (
 	"bytes"
 	"context"
 	"fmt"
 
-	client "github.com/celestiaorg/celestia-openrpc"
 	"github.com/celestiaorg/celestia-openrpc/types/blob"
 	"github.com/celestiaorg/celestia-openrpc/types/share"
-	"github.com/celestiaorg/rsmt2d"
+
+	clientbuilder "github.com/celestiaorg/celestia-openrpc/builder"
 )
 
+/*
+	This example demonstrates how to create a client that is only
+	dependent on the blob and share types from this library.
+
+	This is useful for environments where dependencies should be
+	kept to a minimum.
+*/
+
 func main() {
-	SubmitBlob(context.Background(), "ws://localhost:26658", "JWT_TOKEN")
+	ctx := context.Background()
+	url := "ws://localhost:26658"
+	token := ""
+
+	err := SubmitBlob(ctx, url, token)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+const AuthKey = "Authorization"
+
+type Client struct {
+	Blob blob.API
 }
 
 // SubmitBlob submits a blob containing "Hello, World!" to the 0xDEADBEEF namespace. It uses the default signer on the running node.
 func SubmitBlob(ctx context.Context, url string, token string) error {
-	client, err := client.NewClient(ctx, url, token)
+	var client Client
+	constructedClient, err := clientbuilder.NewClient(ctx, url, token, client)
 	if err != nil {
 		return err
 	}
+
+	client = constructedClient.(Client)
 
 	// let's post to 0xDEADBEEF namespace
 	namespace, err := share.NewBlobNamespaceV0([]byte{0xDE, 0xAD, 0xBE, 0xEF})
@@ -64,4 +75,3 @@ func SubmitBlob(ctx context.Context, url string, token string) error {
 	fmt.Printf("Blobs are equal? %v\n", bytes.Equal(helloWorldBlob.Commitment, retrievedBlobs[0].Commitment))
 	return nil
 }
-```
