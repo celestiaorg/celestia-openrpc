@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/celestiaorg/go-header"
 	cmjson "github.com/cometbft/cometbft/libs/json"
+
+	"github.com/celestiaorg/go-header"
 
 	"github.com/celestiaorg/celestia-openrpc/types/core"
 )
