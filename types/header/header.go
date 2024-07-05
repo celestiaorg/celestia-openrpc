@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/celestiaorg/go-header"
 	cmjson "github.com/cometbft/cometbft/libs/json"
 
-	"github.com/rollkit/celestia-openrpc/types/core"
+	"github.com/celestiaorg/go-header"
+
+	"github.com/celestiaorg/celestia-openrpc/types/core"
 )
 
 // RawHeader is an alias to core.Header. It is
