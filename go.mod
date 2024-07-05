@@ -3,7 +3,7 @@ module github.com/celestiaorg/celestia-openrpc
 go 1.20
 
 require (
-	cosmossdk.io/math v1.1.2
+	cosmossdk.io/math v1.3.0
 	github.com/celestiaorg/go-fraud v0.2.0
 	github.com/celestiaorg/go-header v0.4.1
 	github.com/celestiaorg/go-square v1.0.1
