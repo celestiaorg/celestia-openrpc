@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - ci/ramin/ci-cleanup
     # Trigger on version tags
     tags:
       - 'v[0-9]+\.[0-9]+\.[0-9]+'
