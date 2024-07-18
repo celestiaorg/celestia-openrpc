@@ -10,7 +10,7 @@ type API struct {
 	// Submit sends Blobs and reports the height in which they were included.
 	// Allows sending multiple Blobs atomically synchronously.
 	// Uses default wallet registered on the Node.
-	Submit func(context.Context, []*Blob, float64) (uint64, error) `perm:"write"`
+	Submit func(context.Context, []*Blob, opts *SubmitOptions) (uint64, error) `perm:"write"`
 	// Get retrieves the blob by commitment under the given namespace and height.
 	Get func(context.Context, uint64, share.Namespace, Commitment) (*Blob, error) `perm:"read"`
 	// GetAll returns all blobs at the given height under the given namespaces.

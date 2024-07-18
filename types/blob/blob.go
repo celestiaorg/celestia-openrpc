@@ -95,12 +95,6 @@ func NewBlob(shareVersion uint8, namespace share.Namespace, data []byte) (*Blob,
 	return &Blob{Blob: blob, Commitment: com, namespace: namespace, index: -1}, nil
 }
 
-// DefaultGasPrice returns the default gas price, letting node automatically
-// determine the Fee based on the passed blob sizes.
-func DefaultGasPrice() float64 {
-	return -1.0
-}
-
 type jsonBlob struct {
 	Namespace    share.Namespace `json:"namespace"`
 	Data         []byte          `json:"data"`
