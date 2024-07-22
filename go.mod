@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	cosmossdk.io/math v1.3.0
-	github.com/celestiaorg/go-fraud v0.2.0
+	github.com/celestiaorg/go-fraud v0.2.1
 	github.com/celestiaorg/go-header v0.4.1
 	github.com/celestiaorg/go-square v1.0.1
 	github.com/celestiaorg/go-square/merkle v0.0.0-20240429192549-dea967e1533b
