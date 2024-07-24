@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/celestiaorg/nmt"
+	"github.com/celestiaorg/nmt/namespace"
 
 	"github.com/celestiaorg/celestia-openrpc/types/appconsts"
 	"github.com/celestiaorg/celestia-openrpc/types/share"
@@ -27,6 +28,42 @@ var (
 	ErrBlobNotFound = errors.New("blob: not found")
 	ErrInvalidProof = errors.New("blob: invalid proof")
 )
+
+// RowProof is a Merkle proof that a set of rows exist in a Merkle tree with a
+// given data root.
+type RowProof struct {
+	// RowRoots are the roots of the rows being proven.
+	RowRoots []byte `json:"row_roots"`
+	// Proofs is a list of Merkle proofs where each proof proves that a row
+	// exists in a Merkle tree with a given data root.
+	Proofs   []*merkle.Proof `json:"proofs"`
+	StartRow uint32          `json:"start_row"`
+	EndRow   uint32          `json:"end_row"`
+}
+
+// CommitmentProof is an inclusion proof of a commitment to the data root.
+// TODO: The verification methods are not copied over from celestia-node because of problematic imports.
+type CommitmentProof struct {
+	// SubtreeRoots are the subtree roots of the blob's data that are
+	// used to create the commitment.
+	SubtreeRoots [][]byte `json:"subtree_roots"`
+	// SubtreeRootProofs are the NMT proofs for the subtree roots
+	// to the row roots.
+	SubtreeRootProofs []*nmt.Proof `json:"subtree_root_proofs"`
+	// NamespaceID is the namespace id of the commitment being proven. This
+	// namespace id is used when verifying the proof. If the namespace id doesn't
+	// match the namespace of the shares, the proof will fail verification.
+	NamespaceID namespace.ID `json:"namespace_id"`
+	// RowProof is the proof of the rows containing the blob's data to the
+	// data root.
+	RowProof         RowProof `json:"row_proof"`
+	NamespaceVersion uint8    `json:"namespace_version"`
+}
+
+type SubscriptionResponse struct {
+	Blobs  []*Blob
+	Height uint64
+}
 
 // Commitment is a Merkle Root of the subtree built from shares of the Blob.
 // It is computed by splitting the blob into shares and building the Merkle subtree to be included
